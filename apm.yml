@@ -1,0 +1,21 @@
+name: wp-agent-stack
+version: 0.1.0
+description: >-
+  Coleção reutilizável de assets de desenvolvimento agêntico para projetos WordPress —
+  skills, agents, hooks e MCP validados em produção antes de serem promovidos aqui.
+author: Marcus Vinícius de Lima
+license: MIT
+homepage: https://github.com/marcvlima/wp-agent-stack
+# Quais harnesses recebem os primitives por padrão ao rodar `apm install`.
+# Resolution order: --target flag > este campo > auto-detect pelo filesystem.
+# 'antigravity' é explicit-only no APM (não integra 'all'/o default) — consumidores
+# que usam o Antigravity precisam pedir explicitamente: --target claude,cursor,copilot,windsurf,antigravity
+targets:
+  - claude
+  - cursor
+  - copilot
+  - windsurf
+includes: auto
+dependencies:
+  apm: []
+  mcp: []

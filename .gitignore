@@ -1,1 +1,5 @@
 .DS_Store
+
+# APM (Agent Package Manager) build/runtime artifacts — regenerated from apm.yml
+apm_modules/
+build/

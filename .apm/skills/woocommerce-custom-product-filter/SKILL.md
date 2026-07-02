@@ -15,7 +15,7 @@ filtros — ele força page reload e é incompatível com a Interactivity API.
 
 Este guia foi extraído da implementação real e validada da **busca por nome** no tema
 `arabian-mirage`. Siga os 6 passos na ordem. O código de referência completo está em
-[`reference/`](reference/).
+[`references/`](references/).
 
 ---
 
@@ -58,7 +58,7 @@ Nomes de exemplo (troque pelo seu filtro): parâmetro `filter_nome`, tipo de chi
 ### 1. PHP — Query var + aplicação na query principal
 Registre uma query var própria (NUNCA use `s` nativo, que marca a página como busca e
 força reload) e aplique-a em `woocommerce_product_query`, **escopado** aos archives da
-loja. Ver [`reference/loja-blocos.php`](reference/loja-blocos.php) (seção "query").
+loja. Ver [`references/loja-blocos.php`](references/loja-blocos.php) (seção "query").
 
 ### 2. PHP — Chip em "Filtros ativos" via hook público
 Use o filtro **público** `woocommerce_blocks_product_filters_selected_items` (o mesmo que
@@ -88,7 +88,7 @@ wp_enqueue_script_module(
 `wp_enqueue_script` (clássico) aqui **não funciona** — ver armadilha #1.
 
 ### 5. JS (módulo) — Navegação AJAX + extensão aditiva do store
-Ver [`reference/loja-search.js`](reference/loja-search.js) na íntegra. Pontos-chave:
+Ver [`references/loja-search.js`](references/loja-search.js) na íntegra. Pontos-chave:
 - Navegar com `const { actions } = await import('@wordpress/interactivity-router');
   await actions.navigate(href);`
 - `store('woocommerce/product-filters', { actions: {...}, callbacks: {...} })` **só com
@@ -101,7 +101,7 @@ Ver [`reference/loja-search.js`](reference/loja-search.js) na íntegra. Pontos-c
 
 ### 6. Template part + CSS
 Adicione o bloco no `parts/loja-filtros.html` na posição desejada e estilize o controle
-para casar com os demais filtros. Ver [`reference/`](reference/).
+para casar com os demais filtros. Ver [`references/`](references/).
 
 ---
 
