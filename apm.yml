@@ -16,4 +16,5 @@ dependencies:
   apm:
   - marcvlima/holding-central-ai-assets/architecture-council
   - marcvlima/holding-central-ai-assets/product-taxonomy-council
+  - marcvlima/holding-central-ai-assets/mandatory-soft-skills-for-agents
   mcp: []
