@@ -1,0 +1,26 @@
+<!--
+  REFERÊNCIA — posicionamento do bloco custom dentro do template part de filtros
+  (wp-content/themes/arabian-mirage/parts/loja-filtros.html).
+
+  O bloco DEVE ficar DENTRO do <!-- wp:woocommerce/product-filters --> para
+  herdar o contexto/namespace da Interactivity API. Aqui vai como 1º filtro.
+-->
+
+<!-- wp:woocommerce/product-filters {"className":"am-loja-filtros wc-block-product-filters"} -->
+<div class="wp-block-woocommerce-product-filters am-loja-filtros wc-block-product-filters">
+
+	<!-- Chips de "Filtros ativos" (nativo) — é aqui que o SEU chip aparece -->
+	<!-- wp:woocommerce/product-filter-active {"className":"am-filter am-filter--active"} -->
+	<!-- ... (removable-chips nativo) ... -->
+	<!-- /wp:woocommerce/product-filter-active -->
+
+	<!-- SEU FILTRO CUSTOM — bloco próprio do tema, dentro do wrapper -->
+	<!-- wp:arabian-mirage/product-filter-search /-->
+
+	<!-- Filtros nativos seguem normalmente (marca, gênero, preço, etc.) -->
+	<!-- wp:woocommerce/product-filter-taxonomy {"taxonomy":"product_brand", ...} -->
+	<!-- ... -->
+	<!-- /wp:woocommerce/product-filter-taxonomy -->
+
+</div>
+<!-- /wp:woocommerce/product-filters -->

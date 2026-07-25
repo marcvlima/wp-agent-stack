@@ -1,0 +1,25 @@
+/* REFERÊNCIA — estilo do controle custom, casando com os demais filtros.
+   Extrato de wp-content/themes/arabian-mirage/assets/loja-blocos.css.
+   Tokens herdados do style.css :root (--am-gold, --am-border, etc.). */
+
+.am-filter--search {
+	margin-bottom: 1.5rem;
+}
+.am-search-field__input {
+	width: 100%;
+	box-sizing: border-box;
+	font-family: var(--am-font-body);
+	font-size: .9rem;
+	padding: .55rem .75rem;
+	border: 1px solid var(--am-border);
+	border-radius: var(--am-radius);
+	color: var(--am-text-dark);
+	background-color: #fff;
+}
+.am-search-field__input:focus {
+	outline: none;
+	border-color: var(--am-gold);
+}
+.am-search-field__input::placeholder {
+	color: var(--am-text-muted);
+}

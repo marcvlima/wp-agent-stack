@@ -1,16 +1,22 @@
 lockfile_version: '1'
-generated_at: '2026-07-02T00:27:22.385558+00:00'
+generated_at: '2026-07-25T18:41:51.062303+00:00'
 apm_version: 0.23.1
 dependencies:
 - repo_url: marcvlima/holding-central-ai-assets
-  name: holding-central-ai-assets
+  name: architecture-council
   host: github.com
-  resolved_commit: 6cc4d41ce27b7f51c7f6b2834797e0beb132d5cd
-  version: unknown
+  resolved_commit: 062618b547d19ef0393a102a7842b9b82d7103e7
+  version: 1.0.0
   virtual_path: architecture-council
   is_virtual: true
   package_type: claude_skill
   deployed_files:
+  - .agents/skills/architecture-council
+  - .agents/skills/architecture-council/SKILL.md
+  - .agents/skills/architecture-council/references/output.md
+  - .agents/skills/architecture-council/references/process.md
+  - .agents/skills/architecture-council/references/roster.md
+  - .agents/skills/architecture-council/skill.json
   - .claude/skills/architecture-council
   - .claude/skills/architecture-council/SKILL.md
   - .claude/skills/architecture-council/references/output.md
@@ -18,6 +24,11 @@ dependencies:
   - .claude/skills/architecture-council/references/roster.md
   - .claude/skills/architecture-council/skill.json
   deployed_file_hashes:
+    .agents/skills/architecture-council/SKILL.md: sha256:e266cef17a79960c72f133f1ad3ff99e3ad21bb4678585735edb141b46845f63
+    .agents/skills/architecture-council/references/output.md: sha256:e15976b146445a0d8a94e6cf385ad574e642c8d43d087d77d89585afc15c3909
+    .agents/skills/architecture-council/references/process.md: sha256:71609b1c1e61e4c8f6381ebf63f792913986ac706bbdf7b28efddee34ed8fa6e
+    .agents/skills/architecture-council/references/roster.md: sha256:e6cc66d00ca5d728b3cd8f1bcfbce436ee91789d164c1d18a3ecc5b467c23510
+    .agents/skills/architecture-council/skill.json: sha256:9f45e84f82d4c4a2491a5318e7c67523c984603c850c2aa7a1c66ea742333c2b
     .claude/skills/architecture-council/SKILL.md: sha256:e266cef17a79960c72f133f1ad3ff99e3ad21bb4678585735edb141b46845f63
     .claude/skills/architecture-council/references/output.md: sha256:e15976b146445a0d8a94e6cf385ad574e642c8d43d087d77d89585afc15c3909
     .claude/skills/architecture-council/references/process.md: sha256:71609b1c1e61e4c8f6381ebf63f792913986ac706bbdf7b28efddee34ed8fa6e
@@ -27,12 +38,60 @@ dependencies:
 - repo_url: marcvlima/holding-central-ai-assets
   name: holding-central-ai-assets
   host: github.com
-  resolved_commit: 6cc4d41ce27b7f51c7f6b2834797e0beb132d5cd
+  resolved_commit: 062618b547d19ef0393a102a7842b9b82d7103e7
   version: unknown
+  virtual_path: development-flow
+  is_virtual: true
+  package_type: claude_skill
+  deployed_files:
+  - .agents/skills/development-flow
+  - .agents/skills/development-flow/SKILL.md
+  - .agents/skills/development-flow/skill.json
+  - .claude/skills/development-flow
+  - .claude/skills/development-flow/SKILL.md
+  - .claude/skills/development-flow/skill.json
+  deployed_file_hashes:
+    .agents/skills/development-flow/SKILL.md: sha256:f14f9c69b41ca2417a143a9d5c824e792efcb6a15833e36940c306c52a2472bc
+    .agents/skills/development-flow/skill.json: sha256:2512b96602ae2c66293db92abf5efdf381b366a52d29f67869b4d522a8fb2471
+    .claude/skills/development-flow/SKILL.md: sha256:f14f9c69b41ca2417a143a9d5c824e792efcb6a15833e36940c306c52a2472bc
+    .claude/skills/development-flow/skill.json: sha256:2512b96602ae2c66293db92abf5efdf381b366a52d29f67869b4d522a8fb2471
+  content_hash: sha256:2448e38d1b58385203c7358d63eba3ac31ea962c939b106f8d8232b8c8917860
+- repo_url: marcvlima/holding-central-ai-assets
+  name: mandatory-soft-skills-for-agents
+  host: github.com
+  resolved_commit: 062618b547d19ef0393a102a7842b9b82d7103e7
+  version: 1.0.0
+  virtual_path: mandatory-soft-skills-for-agents
+  is_virtual: true
+  package_type: claude_skill
+  deployed_files:
+  - .agents/skills/mandatory-soft-skills-for-agents
+  - .agents/skills/mandatory-soft-skills-for-agents/SKILL.md
+  - .agents/skills/mandatory-soft-skills-for-agents/skill.json
+  - .claude/skills/mandatory-soft-skills-for-agents
+  - .claude/skills/mandatory-soft-skills-for-agents/SKILL.md
+  - .claude/skills/mandatory-soft-skills-for-agents/skill.json
+  deployed_file_hashes:
+    .agents/skills/mandatory-soft-skills-for-agents/SKILL.md: sha256:c872b4d867e8b202dba5340e38900451dbaa5e6f775bfbecbedb5b6d74fe3d80
+    .agents/skills/mandatory-soft-skills-for-agents/skill.json: sha256:042c2aaa6fd6f25b28892c7aca5ee5c2430e8bad6bfc1e68dd1c4822d2c5d58e
+    .claude/skills/mandatory-soft-skills-for-agents/SKILL.md: sha256:c872b4d867e8b202dba5340e38900451dbaa5e6f775bfbecbedb5b6d74fe3d80
+    .claude/skills/mandatory-soft-skills-for-agents/skill.json: sha256:042c2aaa6fd6f25b28892c7aca5ee5c2430e8bad6bfc1e68dd1c4822d2c5d58e
+  content_hash: sha256:b65fec62864e3084851a0ab8c2d9353779c3f16b78f92b916e4fa89edf9531cb
+- repo_url: marcvlima/holding-central-ai-assets
+  name: product-taxonomy-council
+  host: github.com
+  resolved_commit: 062618b547d19ef0393a102a7842b9b82d7103e7
+  version: 1.0.0
   virtual_path: product-taxonomy-council
   is_virtual: true
   package_type: claude_skill
   deployed_files:
+  - .agents/skills/product-taxonomy-council
+  - .agents/skills/product-taxonomy-council/SKILL.md
+  - .agents/skills/product-taxonomy-council/references/output.md
+  - .agents/skills/product-taxonomy-council/references/process.md
+  - .agents/skills/product-taxonomy-council/references/roster.md
+  - .agents/skills/product-taxonomy-council/skill.json
   - .claude/skills/product-taxonomy-council
   - .claude/skills/product-taxonomy-council/SKILL.md
   - .claude/skills/product-taxonomy-council/references/output.md
@@ -40,6 +99,11 @@ dependencies:
   - .claude/skills/product-taxonomy-council/references/roster.md
   - .claude/skills/product-taxonomy-council/skill.json
   deployed_file_hashes:
+    .agents/skills/product-taxonomy-council/SKILL.md: sha256:e40b87477a7247b2cc8a96d667238fb421c7a8a22a4895aece8dacfda188f91a
+    .agents/skills/product-taxonomy-council/references/output.md: sha256:13a2895aec8d2596b2cb28453c8d858647ee66e6745b96b596bedaad356ac28a
+    .agents/skills/product-taxonomy-council/references/process.md: sha256:c670a8a5f6d5260d41c5d7ed607eb187df55b08c3f3234496e49914111794f80
+    .agents/skills/product-taxonomy-council/references/roster.md: sha256:2582b1371dd15a82fda20dca08f33ccd1011473e1f9a313b38396660c983e5a4
+    .agents/skills/product-taxonomy-council/skill.json: sha256:a0ac3b19eb162623feed4d0a80d2666834123216a60ac7d9f9db1ddc3f04f92f
     .claude/skills/product-taxonomy-council/SKILL.md: sha256:e40b87477a7247b2cc8a96d667238fb421c7a8a22a4895aece8dacfda188f91a
     .claude/skills/product-taxonomy-council/references/output.md: sha256:13a2895aec8d2596b2cb28453c8d858647ee66e6745b96b596bedaad356ac28a
     .claude/skills/product-taxonomy-council/references/process.md: sha256:c670a8a5f6d5260d41c5d7ed607eb187df55b08c3f3234496e49914111794f80
@@ -47,40 +111,37 @@ dependencies:
     .claude/skills/product-taxonomy-council/skill.json: sha256:a0ac3b19eb162623feed4d0a80d2666834123216a60ac7d9f9db1ddc3f04f92f
   content_hash: sha256:d6f22561b841a14daa6ea2658f02622af6e0322abc90792ce589bbd4eb9cba2b
 - repo_url: marcvlima/holding-central-ai-assets
-  name: holding-central-ai-assets
-  host: github.com
-  resolved_commit: 6b45d8ebeba74b2597f4997f268c198380dcd45d
-  version: unknown
-  virtual_path: mandatory-soft-skills-for-agents
-  is_virtual: true
-  package_type: claude_skill
-  deployed_files:
-  - .claude/skills/mandatory-soft-skills-for-agents
-  - .claude/skills/mandatory-soft-skills-for-agents/SKILL.md
-  - .claude/skills/mandatory-soft-skills-for-agents/skill.json
-  deployed_file_hashes:
-    .claude/skills/mandatory-soft-skills-for-agents/SKILL.md: sha256:c872b4d867e8b202dba5340e38900451dbaa5e6f775bfbecbedb5b6d74fe3d80
-    .claude/skills/mandatory-soft-skills-for-agents/skill.json: sha256:042c2aaa6fd6f25b28892c7aca5ee5c2430e8bad6bfc1e68dd1c4822d2c5d58e
-  content_hash: sha256:b65fec62864e3084851a0ab8c2d9353779c3f16b78f92b916e4fa89edf9531cb
-- repo_url: marcvlima/holding-central-ai-assets
   name: rise-flow
   host: github.com
-  resolved_commit: dc194b38134aa83a4aff3e3393dcf7c77d4b6151
+  resolved_commit: 062618b547d19ef0393a102a7842b9b82d7103e7
   version: 1.0.0
   virtual_path: rise-flow
   is_virtual: true
   package_type: claude_skill
   deployed_files:
+  - .agents/skills/rise-flow
+  - .agents/skills/rise-flow/SKILL.md
+  - .agents/skills/rise-flow/references/c1-progressive-integration.md
+  - .agents/skills/rise-flow/skill.json
   - .claude/skills/rise-flow
   - .claude/skills/rise-flow/SKILL.md
   - .claude/skills/rise-flow/references/c1-progressive-integration.md
   - .claude/skills/rise-flow/skill.json
   deployed_file_hashes:
+    .agents/skills/rise-flow/SKILL.md: sha256:d172f10d75e51cef64cfdccda007359fe68a7ce21dc0a0601f389603332cca9f
+    .agents/skills/rise-flow/references/c1-progressive-integration.md: sha256:5664102d65a014b9b9ce1fb28e88fa2d8ab5a58b931d3d3597332feda64952be
+    .agents/skills/rise-flow/skill.json: sha256:6be6fe883714b5f384e862eda8fdd86353de31f9eb6ca7e580eeffcecabfad4a
     .claude/skills/rise-flow/SKILL.md: sha256:d172f10d75e51cef64cfdccda007359fe68a7ce21dc0a0601f389603332cca9f
     .claude/skills/rise-flow/references/c1-progressive-integration.md: sha256:5664102d65a014b9b9ce1fb28e88fa2d8ab5a58b931d3d3597332feda64952be
     .claude/skills/rise-flow/skill.json: sha256:6be6fe883714b5f384e862eda8fdd86353de31f9eb6ca7e580eeffcecabfad4a
   content_hash: sha256:b7b933cc85022eced71529394a2ede7d386e3bef2fc0bd921b6792a47484e380
 local_deployed_files:
+- .agents/skills/woocommerce-custom-product-filter
+- .agents/skills/woocommerce-custom-product-filter/SKILL.md
+- .agents/skills/woocommerce-custom-product-filter/references/loja-blocos.php
+- .agents/skills/woocommerce-custom-product-filter/references/loja-blocos.snippet.css
+- .agents/skills/woocommerce-custom-product-filter/references/loja-filtros.snippet.html
+- .agents/skills/woocommerce-custom-product-filter/references/loja-search.js
 - .claude/skills/woocommerce-custom-product-filter
 - .claude/skills/woocommerce-custom-product-filter/SKILL.md
 - .claude/skills/woocommerce-custom-product-filter/references/loja-blocos.php
@@ -88,6 +149,11 @@ local_deployed_files:
 - .claude/skills/woocommerce-custom-product-filter/references/loja-filtros.snippet.html
 - .claude/skills/woocommerce-custom-product-filter/references/loja-search.js
 local_deployed_file_hashes:
+  .agents/skills/woocommerce-custom-product-filter/SKILL.md: sha256:7c87ca436084be17f142221649fd5b8ac0e7229cc51610a0f97671409bc9c403
+  .agents/skills/woocommerce-custom-product-filter/references/loja-blocos.php: sha256:ce9cb0a1797de100ba4f6f278771b93c9e67b90b8dc6cd30569f9d68a0dba4ac
+  .agents/skills/woocommerce-custom-product-filter/references/loja-blocos.snippet.css: sha256:8111ea68eda119e62c1527eb6340e750fb3afcbc44adb2e48ef4e8a67bd17eef
+  .agents/skills/woocommerce-custom-product-filter/references/loja-filtros.snippet.html: sha256:e2302b3186357d48efe26935100e419ea9732f2cb43e160c5399de49fbd016ea
+  .agents/skills/woocommerce-custom-product-filter/references/loja-search.js: sha256:8297c37302bae0090297d6db1400d8c34d39f10fb30ce88888f736f49512a76c
   .claude/skills/woocommerce-custom-product-filter/SKILL.md: sha256:7c87ca436084be17f142221649fd5b8ac0e7229cc51610a0f97671409bc9c403
   .claude/skills/woocommerce-custom-product-filter/references/loja-blocos.php: sha256:ce9cb0a1797de100ba4f6f278771b93c9e67b90b8dc6cd30569f9d68a0dba4ac
   .claude/skills/woocommerce-custom-product-filter/references/loja-blocos.snippet.css: sha256:8111ea68eda119e62c1527eb6340e750fb3afcbc44adb2e48ef4e8a67bd17eef
