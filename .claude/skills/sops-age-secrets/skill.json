@@ -1,0 +1,50 @@
+{
+  "$schema": "https://schema.apm.dev/skill/v1.0.0",
+  "name": "sops-age-secrets",
+  "displayName": "sops-age-secrets — Holding-wide SOPS + age secrets",
+  "packageId": "@holding-central-ai-assets/sops-age-secrets",
+  "version": "1.0.1",
+  "description": "MANDATORY holding standard for secrets in git: SOPS + age. OS-agnostic scripts (macOS/Linux/WSL) under scripts/: encrypt allowlisted dotenv keys → committed ciphertext; decrypt with off-repo age key → mode-600 secrets.env. ADR 0003. Self-contained — no AGENTS.md reinforcement required after APM install.",
+  "author": "Marcus Vinícius de Lima (holding)",
+  "license": "MIT",
+  "repository": "https://github.com/marcvlima/holding-central-ai-assets",
+  "keywords": [
+    "sops",
+    "age",
+    "secrets",
+    "encryption",
+    "dotenv",
+    "holding",
+    "multi-machine",
+    "git"
+  ],
+  "mainDocument": "SKILL.md",
+  "skillGuide": "SKILL.md",
+  "documents": {
+    "skillGuide": "SKILL.md",
+    "referenceImplementation": "references/dev-host-layout.md"
+  },
+  "usage": {
+    "aiAssistants": "Whenever a holding project needs secrets available on more than one machine, or an agent would otherwise commit or invent a secrets path: follow this skill. Encrypt via allowlist → secrets.enc.yaml; decrypt via age.key → secrets.env. Never commit age.key or plaintext env.",
+    "engineers": "SOPS+age encrypt/decrypt workflow for holding repositories. Canonical scripts live under dev-host/scripts until extracted.",
+    "founders": "The only approved way to put secrets in git for multi-machine use across the holding (ADR 0003)."
+  },
+  "apm": {
+    "type": "process-skill",
+    "category": "security-ops",
+    "tier": "core",
+    "compatibility": {
+      "minVersion": "1.0.0",
+      "platforms": [
+        "vscode",
+        "web",
+        "api",
+        "cli"
+      ]
+    }
+  },
+  "directories": {
+    "references": "references",
+    "scripts": "scripts"
+  }
+}
