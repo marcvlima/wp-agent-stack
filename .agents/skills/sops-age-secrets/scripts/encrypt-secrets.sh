@@ -21,7 +21,7 @@ require_cmd sops age-keygen
 AGE_KEY_FILE="$(abs_path "$(default_age_key)")"
 ENV_FILE="${ENV_FILE:-}"
 ENCRYPTED_OUT="${ENCRYPTED_OUT:-}"
-ALLOW_KEYS="${ALLOW_KEYS:-CLOUDFLARE_API_TOKEN MODEM_ADMIN_USER MODEM_ADMIN_PASSWORD NOIP_DDNS_KEY_USERNAME NOIP_DDNS_KEY_PASSWORD NOIP_HOSTNAME MODEM_LABEL_PASSWORD}"
+ALLOW_KEYS="${ALLOW_KEYS:-CLOUDFLARE_API_TOKEN MODEM_ADMIN_USER MODEM_ADMIN_PASSWORD NOIP_DDNS_KEY_USERNAME NOIP_DDNS_KEY_PASSWORD NOIP_HOSTNAME MODEM_LABEL_PASSWORD HOST_SUDO_USER HOST_SUDO_PASSWORD MAC_SUDO_USER MAC_SUDO_PASSWORD}"
 
 if [ -z "$ENV_FILE" ] || [ -z "$ENCRYPTED_OUT" ]; then
   cat >&2 <<'EOF'
@@ -82,8 +82,15 @@ if [ -z "$PUBKEY" ]; then
   PUBKEY="$(age-keygen -y "$AGE_KEY_FILE")"
 fi
 
-# Encrypt via stdin/out — no OS-specific temp path dependency beyond mktemp
-SOPS_AGE_KEY_FILE="$AGE_KEY_FILE" sops --age "$PUBKEY" --encrypt --input-type yaml --output-type yaml \
+# Encrypt via temp file. --config /dev/null avoids repo .sops.yaml path_regex
+# failing on non-matching temp names. Works macOS/Linux/WSL.
+SOPS_AGE_KEY_FILE="$AGE_KEY_FILE" sops \
+  --config /dev/null \
+  --age "$PUBKEY" \
+  --encrypt \
+  --input-type yaml \
+  --output-type yaml \
+  --filename-override secrets.enc.yaml \
   "$TMP_YAML" > "$TMP_ENC"
 
 # Atomic replace

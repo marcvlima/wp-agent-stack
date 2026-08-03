@@ -1,21 +1,51 @@
-# Skill: sops-age-secrets (v1.0.1)
-
-**Holding-wide · MANDATORY** for storing secrets in git for multi-machine use.
-
-**ADR:** `docs/decisions/0003-sops-age-secrets-holding-standard.md`  
-**This package is self-contained:** scripts under `scripts/` are **OS-agnostic** (macOS, Linux, WSL). No AGENTS.md reinforcement is required beyond installing this skill via APM.
-
+---
+name: sops-age-secrets
+description: >-
+  MANDATORY holding SOPS+age secrets skill. Classify first - general
+  project-independent secrets go only to holding-general-secrets via SOPS;
+  product secrets go to the product repo via SOPS. Encrypt allowlisted dotenv
+  to secrets.enc.yaml; decrypt with off-repo age key to secrets.env. Never
+  commit age.key or plaintext env. ADRs 0003 and 0004.
+version: 1.0.4
 ---
 
+# Skill: sops-age-secrets (v1.0.4)
+
+**Holding-wide · MANDATORY** for storing secrets in git for multi-machine use
+(**product** repos and **`holding-general-secrets`**).
+
+**ADR:** `docs/decisions/0003-sops-age-secrets-holding-standard.md`  
+**General secrets ADR:** `docs/decisions/0004-general-secrets-repo.md`  
+**This package is self-contained:** scripts under `scripts/` are **OS-agnostic** (macOS, Linux, WSL). No AGENTS.md reinforcement is required beyond installing this skill via APM.
+
+***
+## Classification first (NON-NEGOTIABLE)
+
+Before encrypting or inventing a secrets path, classify the credential:
+
+| Class | Where it MUST live | Mechanism |
+|---|---|---|
+| **General** — independent of any one product/project/domain | **`holding-general-secrets` only** | **SOPS+age** (`secrets.enc.yaml`; wrappers `scripts/encrypt-secrets.sh` / `sync-secrets.sh`) |
+| **Product / project** — owned by one product, domain, or host role | That product/tooling repo | **SOPS+age** via **this skill** |
+
+Policy of record for general secrets:
+`holding-general-secrets` → ADRs 0002 + 0003
+
+**Everything general, independent of project, is saved in `holding-general-secrets` via SOPS.**
+Do not put general keys (e.g. Cloudflare **account** API token spanning all zones)
+into product `secrets.enc.yaml`. Do not put product-only keys into the general repo.
+Same skill scripts; different repo paths and allowlists.
+
+***
 ## When to use
 
 - Secrets must work on **more than one machine** via git;
 - Encrypt / re-encrypt / decrypt secrets for a holding project;
 - Bootstrap a **fresh machine** after restoring the age private key;
-- A project needs a secrets layout for the first time.
+- A project needs a secrets layout for the first time;
+- The secret is **product/project-scoped** (after classification above).
 
----
-
+***
 ## Non-negotiables
 
 | Commit | Never commit |
@@ -26,8 +56,7 @@
 
 Local runtime: `secrets.env` mode **600**. Private key mode **600**.
 
----
-
+***
 ## Package layout
 
 ```
@@ -45,8 +74,7 @@ Reference ciphertext for the holding edge stack:
 `holding-central-ai-assets/dev-host/secrets.enc.yaml`  
 (project wrappers: `dev-host/scripts/*.sh` call these OS-agnostic scripts).
 
----
-
+***
 ## Prerequisites (any OS)
 
 ```bash
@@ -69,8 +97,7 @@ chmod 600 "$HOME/.config/risegen/dev-host/age.key"
 age-keygen -y "$HOME/.config/risegen/dev-host/age.key"   # public recipient for .sops.yaml
 ```
 
----
-
+***
 ## Encrypt (update secrets → git)
 
 From **any** OS, with the private key and a source dotenv:
@@ -98,8 +125,7 @@ cd holding-central-ai-assets/dev-host
 ./scripts/encrypt-secrets.sh    # sets ENV_FILE / ENCRYPTED_OUT defaults for this project
 ```
 
----
-
+***
 ## Sync (decrypt on a machine)
 
 ```bash
@@ -122,8 +148,7 @@ Use:
 set -a && . "$HOME/.config/risegen/dev-host/secrets.env" && set +a
 ```
 
----
-
+***
 ## Fresh machine checklist
 
 1. Install `sops` + `age`
@@ -132,8 +157,7 @@ set -a && . "$HOME/.config/risegen/dev-host/secrets.env" && set +a
 4. `sync-secrets.sh` with `ENCRYPTED_IN=...`
 5. Never put `age.key` in the clone
 
----
-
+***
 ## APM install (consumer repo)
 
 ```yaml
@@ -150,10 +174,10 @@ apm install
 
 After install, agents invoke this skill by name/packageId; no extra AGENTS.md prose required.
 
----
-
+***
 ## Agent rules (short)
 
+0. **Classify first:** general → `holding-general-secrets`; product → this skill.
 1. Prefer these scripts over inventing crypto or paths.
 2. Before commit: no `age.key`, no `secrets.env`, no plaintext secret `.env`.
 3. Do not print secret values.
