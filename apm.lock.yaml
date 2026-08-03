@@ -1,12 +1,53 @@
 lockfile_version: '1'
-generated_at: '2026-07-25T18:41:51.062303+00:00'
+generated_at: '2026-08-03T05:25:16.696450+00:00'
 apm_version: 0.23.1
 dependencies:
 - repo_url: marcvlima/holding-central-ai-assets
-  name: architecture-council
+  name: holding-central-ai-assets
+  host: github.com
+  resolved_commit: 4dc71b565be8ee303128d4cd1e0a6501e432f86a
+  version: unknown
+  virtual_path: agency-brainstorm
+  is_virtual: true
+  package_type: claude_skill
+  deployed_files:
+  - .agents/skills/agency-brainstorm
+  - .agents/skills/agency-brainstorm/SKILL.md
+  - .agents/skills/agency-brainstorm/references/intake-new-brand.md
+  - .agents/skills/agency-brainstorm/references/process.md
+  - .agents/skills/agency-brainstorm/references/relentless-method.md
+  - .agents/skills/agency-brainstorm/references/research-and-output.md
+  - .agents/skills/agency-brainstorm/references/roster.md
+  - .agents/skills/agency-brainstorm/skill.json
+  - .claude/skills/agency-brainstorm
+  - .claude/skills/agency-brainstorm/SKILL.md
+  - .claude/skills/agency-brainstorm/references/intake-new-brand.md
+  - .claude/skills/agency-brainstorm/references/process.md
+  - .claude/skills/agency-brainstorm/references/relentless-method.md
+  - .claude/skills/agency-brainstorm/references/research-and-output.md
+  - .claude/skills/agency-brainstorm/references/roster.md
+  - .claude/skills/agency-brainstorm/skill.json
+  deployed_file_hashes:
+    .agents/skills/agency-brainstorm/SKILL.md: sha256:c47c40be60a7bae7002213f79575b8113618a21f82906038ff29cc39c4575bad
+    .agents/skills/agency-brainstorm/references/intake-new-brand.md: sha256:1d23b38f72c741513827861c40343229a4bcc6156863f2f53d2beccfc732705f
+    .agents/skills/agency-brainstorm/references/process.md: sha256:96f970e509dd0dd54823e25fe39a75c88a7c9daae9a8efaf2c6a61ff99f516b2
+    .agents/skills/agency-brainstorm/references/relentless-method.md: sha256:00b340b869e78708c4c56351ebb754594a3bafa76430cb32ea4c66b9d85a50f2
+    .agents/skills/agency-brainstorm/references/research-and-output.md: sha256:c8e1670be5c3444e244a4280650a5673191466a4a11c323cc33df43083f1f0de
+    .agents/skills/agency-brainstorm/references/roster.md: sha256:ed7df7ea46fda133083ebcd6f16c4a3d5ce88aba187fe144e061398ac93c042e
+    .agents/skills/agency-brainstorm/skill.json: sha256:126f51d845058060b3b46a86c07326c6268098f69426848ccadb71a611024a8e
+    .claude/skills/agency-brainstorm/SKILL.md: sha256:c47c40be60a7bae7002213f79575b8113618a21f82906038ff29cc39c4575bad
+    .claude/skills/agency-brainstorm/references/intake-new-brand.md: sha256:1d23b38f72c741513827861c40343229a4bcc6156863f2f53d2beccfc732705f
+    .claude/skills/agency-brainstorm/references/process.md: sha256:96f970e509dd0dd54823e25fe39a75c88a7c9daae9a8efaf2c6a61ff99f516b2
+    .claude/skills/agency-brainstorm/references/relentless-method.md: sha256:00b340b869e78708c4c56351ebb754594a3bafa76430cb32ea4c66b9d85a50f2
+    .claude/skills/agency-brainstorm/references/research-and-output.md: sha256:c8e1670be5c3444e244a4280650a5673191466a4a11c323cc33df43083f1f0de
+    .claude/skills/agency-brainstorm/references/roster.md: sha256:ed7df7ea46fda133083ebcd6f16c4a3d5ce88aba187fe144e061398ac93c042e
+    .claude/skills/agency-brainstorm/skill.json: sha256:126f51d845058060b3b46a86c07326c6268098f69426848ccadb71a611024a8e
+  content_hash: sha256:53a592dc890eea7610880542c067a2babc0cc442aec850f3158c68e6bdb28c81
+- repo_url: marcvlima/holding-central-ai-assets
+  name: holding-central-ai-assets
   host: github.com
   resolved_commit: 062618b547d19ef0393a102a7842b9b82d7103e7
-  version: 1.0.0
+  version: unknown
   virtual_path: architecture-council
   is_virtual: true
   package_type: claude_skill
@@ -57,10 +98,10 @@ dependencies:
     .claude/skills/development-flow/skill.json: sha256:2512b96602ae2c66293db92abf5efdf381b366a52d29f67869b4d522a8fb2471
   content_hash: sha256:2448e38d1b58385203c7358d63eba3ac31ea962c939b106f8d8232b8c8917860
 - repo_url: marcvlima/holding-central-ai-assets
-  name: mandatory-soft-skills-for-agents
+  name: holding-central-ai-assets
   host: github.com
   resolved_commit: 062618b547d19ef0393a102a7842b9b82d7103e7
-  version: 1.0.0
+  version: unknown
   virtual_path: mandatory-soft-skills-for-agents
   is_virtual: true
   package_type: claude_skill
@@ -78,10 +119,10 @@ dependencies:
     .claude/skills/mandatory-soft-skills-for-agents/skill.json: sha256:042c2aaa6fd6f25b28892c7aca5ee5c2430e8bad6bfc1e68dd1c4822d2c5d58e
   content_hash: sha256:b65fec62864e3084851a0ab8c2d9353779c3f16b78f92b916e4fa89edf9531cb
 - repo_url: marcvlima/holding-central-ai-assets
-  name: product-taxonomy-council
+  name: holding-central-ai-assets
   host: github.com
   resolved_commit: 062618b547d19ef0393a102a7842b9b82d7103e7
-  version: 1.0.0
+  version: unknown
   virtual_path: product-taxonomy-council
   is_virtual: true
   package_type: claude_skill
@@ -111,10 +152,10 @@ dependencies:
     .claude/skills/product-taxonomy-council/skill.json: sha256:a0ac3b19eb162623feed4d0a80d2666834123216a60ac7d9f9db1ddc3f04f92f
   content_hash: sha256:d6f22561b841a14daa6ea2658f02622af6e0322abc90792ce589bbd4eb9cba2b
 - repo_url: marcvlima/holding-central-ai-assets
-  name: rise-flow
+  name: holding-central-ai-assets
   host: github.com
   resolved_commit: 062618b547d19ef0393a102a7842b9b82d7103e7
-  version: 1.0.0
+  version: unknown
   virtual_path: rise-flow
   is_virtual: true
   package_type: claude_skill
@@ -135,6 +176,43 @@ dependencies:
     .claude/skills/rise-flow/references/c1-progressive-integration.md: sha256:5664102d65a014b9b9ce1fb28e88fa2d8ab5a58b931d3d3597332feda64952be
     .claude/skills/rise-flow/skill.json: sha256:6be6fe883714b5f384e862eda8fdd86353de31f9eb6ca7e580eeffcecabfad4a
   content_hash: sha256:b7b933cc85022eced71529394a2ede7d386e3bef2fc0bd921b6792a47484e380
+- repo_url: marcvlima/holding-central-ai-assets
+  name: sops-age-secrets
+  host: github.com
+  resolved_commit: d5b2b81480984cf71c7d482363f422282e448e89
+  version: 1.0.0
+  virtual_path: sops-age-secrets
+  is_virtual: true
+  package_type: claude_skill
+  deployed_files:
+  - .agents/skills/sops-age-secrets
+  - .agents/skills/sops-age-secrets/SKILL.md
+  - .agents/skills/sops-age-secrets/references/dev-host-layout.md
+  - .agents/skills/sops-age-secrets/scripts/encrypt-secrets.sh
+  - .agents/skills/sops-age-secrets/scripts/lib.sh
+  - .agents/skills/sops-age-secrets/scripts/sync-secrets.sh
+  - .agents/skills/sops-age-secrets/skill.json
+  - .claude/skills/sops-age-secrets
+  - .claude/skills/sops-age-secrets/SKILL.md
+  - .claude/skills/sops-age-secrets/references/dev-host-layout.md
+  - .claude/skills/sops-age-secrets/scripts/encrypt-secrets.sh
+  - .claude/skills/sops-age-secrets/scripts/lib.sh
+  - .claude/skills/sops-age-secrets/scripts/sync-secrets.sh
+  - .claude/skills/sops-age-secrets/skill.json
+  deployed_file_hashes:
+    .agents/skills/sops-age-secrets/SKILL.md: sha256:9129a9622eca10d1239481db8f502d355fde21f6ce9506c2bbe767add174e3e6
+    .agents/skills/sops-age-secrets/references/dev-host-layout.md: sha256:bda3ab748ddeda7204550968c4c449900f57f4ff0e478df1a5a357e132c5e26b
+    .agents/skills/sops-age-secrets/scripts/encrypt-secrets.sh: sha256:6cf11c77d16df7da98b0794124483504e9451b0d3de252ba824e5b7e81ba1acf
+    .agents/skills/sops-age-secrets/scripts/lib.sh: sha256:131b825278d084bd019473be8a4b33fc6b835fea343723e9ac4b3351a05d16ac
+    .agents/skills/sops-age-secrets/scripts/sync-secrets.sh: sha256:f891fa588f96c0b45ef332825f35f57f1b4178eb2a683bf412947269dd0582ef
+    .agents/skills/sops-age-secrets/skill.json: sha256:389541c6671dfe0ac58653c133672323cf7c9d6559464347710ae2ecebb00dca
+    .claude/skills/sops-age-secrets/SKILL.md: sha256:9129a9622eca10d1239481db8f502d355fde21f6ce9506c2bbe767add174e3e6
+    .claude/skills/sops-age-secrets/references/dev-host-layout.md: sha256:bda3ab748ddeda7204550968c4c449900f57f4ff0e478df1a5a357e132c5e26b
+    .claude/skills/sops-age-secrets/scripts/encrypt-secrets.sh: sha256:6cf11c77d16df7da98b0794124483504e9451b0d3de252ba824e5b7e81ba1acf
+    .claude/skills/sops-age-secrets/scripts/lib.sh: sha256:131b825278d084bd019473be8a4b33fc6b835fea343723e9ac4b3351a05d16ac
+    .claude/skills/sops-age-secrets/scripts/sync-secrets.sh: sha256:f891fa588f96c0b45ef332825f35f57f1b4178eb2a683bf412947269dd0582ef
+    .claude/skills/sops-age-secrets/skill.json: sha256:389541c6671dfe0ac58653c133672323cf7c9d6559464347710ae2ecebb00dca
+  content_hash: sha256:5c641ef63a03d702e9237795306e623028eb52e08ff6ab3205fdbe3de5461c13
 local_deployed_files:
 - .agents/skills/woocommerce-custom-product-filter
 - .agents/skills/woocommerce-custom-product-filter/SKILL.md

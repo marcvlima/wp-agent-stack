@@ -20,4 +20,5 @@ dependencies:
   - marcvlima/holding-central-ai-assets/rise-flow
   - marcvlima/holding-central-ai-assets/development-flow
   - marcvlima/holding-central-ai-assets/agency-brainstorm
+  - marcvlima/holding-central-ai-assets/sops-age-secrets#
   mcp: []
