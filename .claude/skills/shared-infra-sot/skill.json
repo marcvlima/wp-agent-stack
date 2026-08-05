@@ -1,0 +1,50 @@
+{
+  "$schema": "https://schema.apm.dev/skill/v1.0.0",
+  "name": "shared-infra-sot",
+  "displayName": "shared-infra-sot — Holding shared infrastructure Source of Truth harness",
+  "packageId": "@holding-central-ai-assets/shared-infra-sot",
+  "version": "1.0.0",
+  "description": "MANDATORY harness for holding residential/edge infrastructure knowledge. Knowledge SoT is lakenbeach/holding-shared-infra (docs/INDEX.md). This skill enforces discovery, anti-volatility (promote session truths into the SoT), and progressive disclosure. Reconcile into EVERY holding repository via scripts/reconcile-shared-infra-sot.sh. Does not store runbooks itself — points at the knowledge repo.",
+  "author": "Marcus Vinícius de Lima (holding)",
+  "license": "MIT",
+  "repository": "https://github.com/marcvlima/holding-central-ai-assets",
+  "keywords": [
+    "shared-infra",
+    "sot",
+    "edge",
+    "residential",
+    "ddns",
+    "xiaomi",
+    "caddy",
+    "anti-volatility",
+    "apm",
+    "holding",
+    "progressive-disclosure"
+  ],
+  "mainDocument": "SKILL.md",
+  "skillGuide": "SKILL.md",
+  "documents": {
+    "skillGuide": "SKILL.md",
+    "policy": "references/policy.md",
+    "discovery": "references/discovery.md",
+    "reconcile": "references/reconcile.md"
+  },
+  "usage": {
+    "aiAssistants": "On ANY residential LAN/edge/CPE/home-Cloudflare/DDNS/topology task: open skill, then lakenbeach/holding-shared-infra docs/INDEX.md. Never invent topology from chat. Promote durable facts into that repo before marking done. Reconcile this skill into every repo.",
+    "engineers": "APM core skill that keeps shared-infra knowledge non-volatile across the holding.",
+    "founders": "Guarantees edge/LAN procedures live in git SoT and every product repo enforces the same discovery rule."
+  },
+  "apm": {
+    "type": "process-skill",
+    "category": "infra-discipline",
+    "tier": "core",
+    "compatibility": {
+      "minVersion": "1.0.0",
+      "platforms": ["vscode", "web", "api", "cli"]
+    }
+  },
+  "directories": {
+    "references": "references",
+    "scripts": "scripts"
+  }
+}
