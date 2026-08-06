@@ -14,3 +14,8 @@
 **Depth:** skill package + SoT `docs/INDEX.md` (progressive disclosure).
 <!-- HOLDING-SHARED-INFRA-SOT:END -->
 
+
+## Holding quality gate (quality-guard)
+
+Production code changes require paired tests and a green `quality-guard run`
+before `git commit`. Agents must not use `--no-verify`. See skill `quality-enforcement`.

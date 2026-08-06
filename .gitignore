@@ -3,3 +3,7 @@
 # APM (Agent Package Manager) build/runtime artifacts — regenerated from apm.yml
 apm_modules/
 build/
+
+.risegen/quality-gate.json
+
+.risegen/quality-session.json

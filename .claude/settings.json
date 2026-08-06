@@ -9,6 +9,15 @@
           }
         ],
         "matcher": "Edit|Write|MultiEdit|NotebookEdit|Bash"
+      },
+      {
+        "hooks": [
+          {
+            "command": "export PATH=\"${HOME}/.local/bin:${PATH}\"; if command -v quality-guard \u003e/dev/null 2\u003e\u00261; then exec quality-guard hook claude-code --event PostToolUse; fi; if [ -f \"$(git rev-parse --show-toplevel 2\u003e/dev/null || echo .)/.risegen/quality-bootstrap.sh\" ]; then sh \"$(git rev-parse --show-toplevel 2\u003e/dev/null || echo .)/.risegen/quality-bootstrap.sh\" hook claude-code --event PostToolUse; exit $?; fi; printf '%s\\n' 'quality-guard UNAVAILABLE — install NOW (NON-OPTIONAL, do not ask the founder). Recipe: export PATH=\"${HOME}/.local/bin:${PATH}\"; sh \"$(git rev-parse --show-toplevel 2\u003e/dev/null || echo .)/.risegen/quality-bootstrap.sh\" version || (SRC=\"\"; for d in \"$HOME/Developer/holding-central-ai-assets\" \"$HOME/Developer/risegen/holding-central-ai-assets\"; do [ -d \"$d/quality-guard\" ] \u0026\u0026 SRC=\"$d/quality-guard\" \u0026\u0026 break; done; if [ -z \"$SRC\" ]; then command -v gh \u003e/dev/null \u0026\u0026 TMP=$(mktemp -d) \u0026\u0026 gh repo clone marcvlima/holding-central-ai-assets \"$TMP/hca\" -- --depth 1 \u0026\u0026 SRC=\"$TMP/hca/quality-guard\"; fi; mkdir -p \"$HOME/.local/bin\" \u0026\u0026 (cd \"$SRC\" \u0026\u0026 go build -trimpath -o \"$HOME/.local/bin/quality-guard\" ./cmd/quality-guard) \u0026\u0026 quality-guard install --repo \"$(git rev-parse --show-toplevel)\"); quality-guard version \u0026\u0026 quality-guard run \u0026\u0026 quality-guard status'",
+            "type": "command"
+          }
+        ],
+        "matcher": "Edit|Write"
       }
     ],
     "PreToolUse": [
@@ -26,9 +35,22 @@
           {
             "command": "command -v abg-guard \u003e/dev/null 2\u003e\u00261 \u0026\u0026 exec abg-guard hook claude-code --event pre-tool-use || sh \"$(git rev-parse --show-toplevel 2\u003e/dev/null || echo .)/.risegen/abg-bootstrap.sh\" hook claude-code --event pre-tool-use || printf '%s' '{\"hookSpecificOutput\":{\"hookEventName\":\"PreToolUse\",\"permissionDecision\":\"deny\",\"permissionDecisionReason\":\"abg-guard unavailable — the ABG gate could not evaluate this call, so it is denied. Install the gate: `sh .risegen/abg-bootstrap.sh version` (needs `gh` authenticated), then register your work: `abg-guard register --item #\u003cissue\u003e`.\"}}'",
             "type": "command"
+          },
+          {
+            "command": "export PATH=\"${HOME}/.local/bin:${PATH}\"; if command -v quality-guard \u003e/dev/null 2\u003e\u00261; then exec quality-guard hook claude-code --event PreToolUse; fi; if [ -f \"$(git rev-parse --show-toplevel 2\u003e/dev/null || echo .)/.risegen/quality-bootstrap.sh\" ]; then sh \"$(git rev-parse --show-toplevel 2\u003e/dev/null || echo .)/.risegen/quality-bootstrap.sh\" hook claude-code --event PreToolUse; exit $?; fi; printf '%s' '{\"hookSpecificOutput\":{\"hookEventName\":\"PreToolUse\",\"permissionDecision\":\"deny\",\"permissionDecisionReason\":\"quality-guard UNAVAILABLE — install NOW (NON-OPTIONAL, do not ask the founder). Recipe: export PATH=\\\"${HOME}/.local/bin:${PATH}\\\"; sh \\\"$(git rev-parse --show-toplevel 2\u003e/dev/null || echo .)/.risegen/quality-bootstrap.sh\\\" version || (SRC=\\\"\\\"; for d in \\\"$HOME/Developer/holding-central-ai-assets\\\" \\\"$HOME/Developer/risegen/holding-central-ai-assets\\\"; do [ -d \\\"$d/quality-guard\\\" ] \u0026\u0026 SRC=\\\"$d/quality-guard\\\" \u0026\u0026 break; done; if [ -z \\\"$SRC\\\" ]; then command -v gh \u003e/dev/null \u0026\u0026 TMP=$(mktemp -d) \u0026\u0026 gh repo clone marcvlima/holding-central-ai-assets \\\"$TMP/hca\\\" -- --depth 1 \u0026\u0026 SRC=\\\"$TMP/hca/quality-guard\\\"; fi; mkdir -p \\\"$HOME/.local/bin\\\" \u0026\u0026 (cd \\\"$SRC\\\" \u0026\u0026 go build -trimpath -o \\\"$HOME/.local/bin/quality-guard\\\" ./cmd/quality-guard) \u0026\u0026 quality-guard install --repo \\\"$(git rev-parse --show-toplevel)\\\"); quality-guard version \u0026\u0026 quality-guard run \u0026\u0026 quality-guard status\"}}'",
+            "type": "command"
           }
         ],
         "matcher": "Bash"
+      },
+      {
+        "hooks": [
+          {
+            "command": "export PATH=\"${HOME}/.local/bin:${PATH}\"; if command -v quality-guard \u003e/dev/null 2\u003e\u00261; then exec quality-guard hook claude-code --event PreToolUse; fi; if [ -f \"$(git rev-parse --show-toplevel 2\u003e/dev/null || echo .)/.risegen/quality-bootstrap.sh\" ]; then sh \"$(git rev-parse --show-toplevel 2\u003e/dev/null || echo .)/.risegen/quality-bootstrap.sh\" hook claude-code --event PreToolUse; exit $?; fi; printf '%s' '{\"hookSpecificOutput\":{\"hookEventName\":\"PreToolUse\",\"permissionDecision\":\"deny\",\"permissionDecisionReason\":\"quality-guard UNAVAILABLE — install NOW (NON-OPTIONAL, do not ask the founder). Recipe: export PATH=\\\"${HOME}/.local/bin:${PATH}\\\"; sh \\\"$(git rev-parse --show-toplevel 2\u003e/dev/null || echo .)/.risegen/quality-bootstrap.sh\\\" version || (SRC=\\\"\\\"; for d in \\\"$HOME/Developer/holding-central-ai-assets\\\" \\\"$HOME/Developer/risegen/holding-central-ai-assets\\\"; do [ -d \\\"$d/quality-guard\\\" ] \u0026\u0026 SRC=\\\"$d/quality-guard\\\" \u0026\u0026 break; done; if [ -z \\\"$SRC\\\" ]; then command -v gh \u003e/dev/null \u0026\u0026 TMP=$(mktemp -d) \u0026\u0026 gh repo clone marcvlima/holding-central-ai-assets \\\"$TMP/hca\\\" -- --depth 1 \u0026\u0026 SRC=\\\"$TMP/hca/quality-guard\\\"; fi; mkdir -p \\\"$HOME/.local/bin\\\" \u0026\u0026 (cd \\\"$SRC\\\" \u0026\u0026 go build -trimpath -o \\\"$HOME/.local/bin/quality-guard\\\" ./cmd/quality-guard) \u0026\u0026 quality-guard install --repo \\\"$(git rev-parse --show-toplevel)\\\"); quality-guard version \u0026\u0026 quality-guard run \u0026\u0026 quality-guard status\"}}'",
+            "type": "command"
+          }
+        ],
+        "matcher": "Edit|Write"
       }
     ],
     "SessionStart": [
@@ -36,6 +58,10 @@
         "hooks": [
           {
             "command": "command -v abg-guard \u003e/dev/null 2\u003e\u00261 \u0026\u0026 exec abg-guard hook claude-code --event session-start || sh \"$(git rev-parse --show-toplevel 2\u003e/dev/null || echo .)/.risegen/abg-bootstrap.sh\" hook claude-code --event session-start",
+            "type": "command"
+          },
+          {
+            "command": "export PATH=\"${HOME}/.local/bin:${PATH}\"; if command -v quality-guard \u003e/dev/null 2\u003e\u00261; then exec quality-guard hook claude-code --event SessionStart; fi; if [ -f \"$(git rev-parse --show-toplevel 2\u003e/dev/null || echo .)/.risegen/quality-bootstrap.sh\" ]; then sh \"$(git rev-parse --show-toplevel 2\u003e/dev/null || echo .)/.risegen/quality-bootstrap.sh\" hook claude-code --event SessionStart; exit $?; fi; printf '%s\\n' 'quality-guard UNAVAILABLE — install NOW (NON-OPTIONAL, do not ask the founder). Recipe: export PATH=\"${HOME}/.local/bin:${PATH}\"; sh \"$(git rev-parse --show-toplevel 2\u003e/dev/null || echo .)/.risegen/quality-bootstrap.sh\" version || (SRC=\"\"; for d in \"$HOME/Developer/holding-central-ai-assets\" \"$HOME/Developer/risegen/holding-central-ai-assets\"; do [ -d \"$d/quality-guard\" ] \u0026\u0026 SRC=\"$d/quality-guard\" \u0026\u0026 break; done; if [ -z \"$SRC\" ]; then command -v gh \u003e/dev/null \u0026\u0026 TMP=$(mktemp -d) \u0026\u0026 gh repo clone marcvlima/holding-central-ai-assets \"$TMP/hca\" -- --depth 1 \u0026\u0026 SRC=\"$TMP/hca/quality-guard\"; fi; mkdir -p \"$HOME/.local/bin\" \u0026\u0026 (cd \"$SRC\" \u0026\u0026 go build -trimpath -o \"$HOME/.local/bin/quality-guard\" ./cmd/quality-guard) \u0026\u0026 quality-guard install --repo \"$(git rev-parse --show-toplevel)\"); quality-guard version \u0026\u0026 quality-guard run \u0026\u0026 quality-guard status'",
             "type": "command"
           }
         ],
@@ -47,6 +73,10 @@
         "hooks": [
           {
             "command": "command -v abg-guard \u003e/dev/null 2\u003e\u00261 \u0026\u0026 exec abg-guard hook claude-code --event stop || sh \"$(git rev-parse --show-toplevel 2\u003e/dev/null || echo .)/.risegen/abg-bootstrap.sh\" hook claude-code --event stop",
+            "type": "command"
+          },
+          {
+            "command": "export PATH=\"${HOME}/.local/bin:${PATH}\"; if command -v quality-guard \u003e/dev/null 2\u003e\u00261; then exec quality-guard hook claude-code --event Stop; fi; if [ -f \"$(git rev-parse --show-toplevel 2\u003e/dev/null || echo .)/.risegen/quality-bootstrap.sh\" ]; then sh \"$(git rev-parse --show-toplevel 2\u003e/dev/null || echo .)/.risegen/quality-bootstrap.sh\" hook claude-code --event Stop; exit $?; fi; printf '%s' '{\"decision\":\"block\",\"reason\":\"quality-guard UNAVAILABLE — install NOW (NON-OPTIONAL, do not ask the founder). Recipe: export PATH=\\\"${HOME}/.local/bin:${PATH}\\\"; sh \\\"$(git rev-parse --show-toplevel 2\u003e/dev/null || echo .)/.risegen/quality-bootstrap.sh\\\" version || (SRC=\\\"\\\"; for d in \\\"$HOME/Developer/holding-central-ai-assets\\\" \\\"$HOME/Developer/risegen/holding-central-ai-assets\\\"; do [ -d \\\"$d/quality-guard\\\" ] \u0026\u0026 SRC=\\\"$d/quality-guard\\\" \u0026\u0026 break; done; if [ -z \\\"$SRC\\\" ]; then command -v gh \u003e/dev/null \u0026\u0026 TMP=$(mktemp -d) \u0026\u0026 gh repo clone marcvlima/holding-central-ai-assets \\\"$TMP/hca\\\" -- --depth 1 \u0026\u0026 SRC=\\\"$TMP/hca/quality-guard\\\"; fi; mkdir -p \\\"$HOME/.local/bin\\\" \u0026\u0026 (cd \\\"$SRC\\\" \u0026\u0026 go build -trimpath -o \\\"$HOME/.local/bin/quality-guard\\\" ./cmd/quality-guard) \u0026\u0026 quality-guard install --repo \\\"$(git rev-parse --show-toplevel)\\\"); quality-guard version \u0026\u0026 quality-guard run \u0026\u0026 quality-guard status\"}'",
             "type": "command"
           }
         ],

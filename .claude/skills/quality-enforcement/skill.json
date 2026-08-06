@@ -1,0 +1,5 @@
+{
+  "name": "quality-enforcement",
+  "version": "1.2.0",
+  "description": "Deterministic paired-test + quality-guard gates before commit; hooks enforce"
+}
