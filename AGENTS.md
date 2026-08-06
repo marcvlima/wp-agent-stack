@@ -19,3 +19,9 @@
 
 Production code changes require paired tests and a green `quality-guard run`
 before `git commit`. Agents must not use `--no-verify`. See skill `quality-enforcement`.
+
+## Holding plan fidelity (plan-guard)
+
+When a plan is registered, implementation must fulfill it; silent deviation is
+forbidden. Use `plan-guard register|run|status`. Reconcile only via founder/dev.
+See skill `plan-fidelity`.

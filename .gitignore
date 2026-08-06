@@ -7,3 +7,7 @@ build/
 .risegen/quality-gate.json
 
 .risegen/quality-session.json
+
+.risegen/plan-gate.json
+
+.risegen/plan-session.json
