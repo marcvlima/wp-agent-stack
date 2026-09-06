@@ -1,0 +1,69 @@
+{
+  "$schema": "https://schema.apm.dev/skill/v1.0.0",
+  "name": "ai-ml-implementation-council",
+  "displayName": "AI/ML Implementation Council — MoE-Gated (Models, Infra & Code-Assistant Mastery)",
+  "packageId": "@holding-central-ai-assets/ai-ml-implementation-council",
+  "version": "2.2.0",
+  "description": "20-seat MoE-gated council ('all hear, few speak') for AI/ML implementation AND agentic code-assistant engineering: GenAI science, training/fine-tuning, inference systems, MLOps, evaluation, data, GPU/accelerator hardware, cluster topology, engine configuration, plus the v2 wing of code-assistant masters — agentic harness loops (Claude Code lineage), autonomous SWE (Devin lineage), realtime IDE assistants (Cursor/Copilot/Grok Build lineage), and agent reliability evaluation (SWE-bench lineage). Moderator gates 2-4 seats HOT per agenda item; warm seats listen via one batched cheap-model sweep with promotion on substantive flags. Grounds in ADRs/code/live measurements, researches PRIMARY sources, and stays current with the latest industry/market trends via internet research (never relies on a training cutoff), converging to ranked recommendations + ADR-ready decision + executable spec. The founder holds the final word.",
+  "author": "Holding Central AI Assets",
+  "license": "MIT",
+  "repository": "https://github.com/marcvlima/holding-central-ai-assets",
+  "keywords": [
+    "adr",
+    "agent-loop",
+    "agentic",
+    "ai",
+    "code-assistant",
+    "council",
+    "deliberation",
+    "fine-tuning",
+    "genai",
+    "gpu",
+    "hardware",
+    "harness",
+    "ide-assistant",
+    "inference",
+    "llm",
+    "machine-learning",
+    "mlops",
+    "mlx",
+    "moe-gated",
+    "quantization",
+    "reliability",
+    "sglang",
+    "topology",
+    "training",
+    "vllm"
+  ],
+  "mainDocument": "SKILL.md",
+  "skillGuide": "SKILL.md",
+  "documents": {
+    "skillGuide": "SKILL.md",
+    "roster": "references/roster.md",
+    "sessionBrief": "references/session-brief.md",
+    "warmSweep": "references/warm-sweep.md",
+    "relentlessMethod": "references/relentless-method.md"
+  },
+  "usage": {
+    "aiAssistants": "MANDATORY to invoke for any non-trivial AI/ML implementation doubt (model choice, quant, fine-tune recipe, engine flags, GPU topology, eval gates) AND for agentic code-assistant mechanism decisions (stall/inaction handling, continuation policy, forced tool_choice, weak-model degradation, agent reliability gates). Read SKILL.md (Moderator protocol): brief -> gate 2-4 HOT seats -> hot rounds with charters -> warm sweep -> promote -> synthesize ranked options + ADR + executable spec.",
+    "engineers": "The standing expert roster, session protocol, and deliverable format for AI/ML implementation decisions.",
+    "founders": "The authoritative decision room for AI/ML implementation, serving hardware/topology, and engine configuration across the holding."
+  },
+  "apm": {
+    "type": "process-skill",
+    "category": "ai-ml-implementation",
+    "tier": "core",
+    "compatibility": {
+      "minVersion": "1.0.0",
+      "platforms": [
+        "vscode",
+        "web",
+        "api",
+        "cli"
+      ]
+    }
+  },
+  "directories": {
+    "references": "references"
+  }
+}

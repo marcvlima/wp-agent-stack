@@ -1,16 +1,26 @@
 {
   "$schema": "https://schema.apm.dev/skill/v1.0.0",
   "name": "product-taxonomy-council",
-  "displayName": "Product Taxonomy Council — Naming & Service Governance",
+  "displayName": "Product Taxonomy, Information Architecture & Navigation Council",
   "packageId": "@holding-central-ai-assets/product-taxonomy-council",
-  "version": "1.2.1",
-  "description": "Convene a standing product-naming and taxonomy-governance council whenever a new product, service or feature is being named, an existing name is questioned, or the product/service catalog or taxonomy is touched. The Chief Product Architect always chairs; specialists (Product Taxonomy/Information Architect, Naming & Verbal-Identity Lead, Brand Architect, Platform/DevRel Strategist, Product Manager, Catalog/Governance Steward) brief on the business/positioning first, ground in the existing catalog and brand system, research PRIMARY sources on disciplined naming practice (AWS/GCP/Azure + IA/taxonomy + verbal-identity), generate meaningful non-trivial names (think outside the box, not dictionary-obvious), run 2 focused consensus rounds (diverge then converge; a Sonnet moderator synthesizes, the top-tier model stays executive), stay unbiased on rejection (produce fresh valid alternatives, never re-defend a rejected name), and converge to a naming decision, catalog entries, and an ADR-ready record.",
+  "version": "2.0.0",
+  "description": "Convene a standing product-taxonomy, information-architecture, and navigation-governance council whenever a new product/service/feature is named, an existing structure is questioned, a site/platform sitemap or taxonomy is designed/refactored, or navigation hierarchies and menu systems are designed or changed. The Chief Product Architect always chairs; specialists (Lead Information Architect, Navigation & Menu Systems Architect, Taxonomy & Metadata Architect, Naming & Verbal-Identity Lead, Brand Architect, Platform/DevRel Strategist, Product Manager, Catalog/Governance Steward) brief on system/business context first, ground in existing catalogs/sitemaps/brand guidelines, research PRIMARY sources on disciplined IA and navigation practice (NN/g, Rosenfeld & Morville, Abby Covert, Donna Spencer, W3C SKOS, AWS/GCP/Azure), generate meaningful non-trivial structures and names, run 2 focused consensus rounds (diverge then converge; Sonnet moderator synthesizes, top-tier model stays executive), stay unbiased on rejection, and converge to a decision, sitemap/menu tree, taxonomy schema, catalog entries, and an ADR-ready record.",
   "author": "RiseGen AI",
   "license": "MIT",
   "repository": "https://github.com/marcvlima/holding-central-ai-assets",
   "keywords": [
-    "naming",
+    "information-architecture",
     "taxonomy",
+    "navigation",
+    "menus",
+    "menu-hierarchy",
+    "sitemap",
+    "wayfinding",
+    "site-taxonomy",
+    "platform-hierarchy",
+    "controlled-vocabulary",
+    "metadata",
+    "naming",
     "product-naming",
     "service-naming",
     "branding",
@@ -28,12 +38,13 @@
     "skillGuide": "SKILL.md",
     "roster": "references/roster.md",
     "process": "references/process.md",
-    "output": "references/output.md"
+    "output": "references/output.md",
+    "relentlessMethod": "references/relentless-method.md"
   },
   "usage": {
-    "aiAssistants": "MANDATORY to invoke before naming any new product/service/feature, before shipping a rename, or before touching the catalog/taxonomy; read SKILL.md, then run the phased session (ground + business/positioning brief -> primary-source research -> 2 consensus rounds [diverge, then converge], Sonnet moderates, top model executive, meaningful non-trivial names, unbiased on rejection -> naming decision + catalog entries + ADR-ready record).",
-    "engineers": "The council roster, the session protocol, and the naming-decision deliverable format.",
-    "founders": "A repeatable, senior naming and taxonomy-governance room that protects the ecosystem's product/service branding as it grows."
+    "aiAssistants": "MANDATORY to invoke before designing/restructuring website or platform hierarchies, sitemaps, navigation menus (global/local/sidebars/drawers), taxonomies, or naming any new product/service/feature; read SKILL.md, then run the phased session (ground + system/business brief -> primary-source research -> 2 consensus rounds [diverge, then converge], Sonnet moderates, top model executive -> structural/naming decision + sitemap/menu spec + taxonomy schema + catalog entries + ADR-ready record).",
+    "engineers": "The council roster, the session protocol, the ten evaluation lenses, and the structural/navigation/naming deliverable format.",
+    "founders": "A repeatable, senior information-architecture, taxonomy, and navigation-governance room that protects user wayfinding, cognitive ergonomics, and product/service branding as the ecosystem scales."
   },
   "apm": {
     "type": "process-skill",
@@ -48,3 +59,4 @@
     "references": "references"
   }
 }
+

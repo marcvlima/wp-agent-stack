@@ -1,0 +1,54 @@
+{
+  "$schema": "https://schema.apm.dev/skill/v1.0.0",
+  "name": "ai-assistant-council",
+  "displayName": "AI Assistant Council — MoE-Gated Assistant & Applied-AI Deliberation",
+  "packageId": "@holding-central-ai-assets/ai-assistant-council",
+  "version": "1.2.0",
+  "description": "16 seats, MoE-gated 'all hear, few speak' deliberation for AI assistant product, platform and applied-AI decisions. Roster: real-time voice pipeline, LLM serving & prefill cache, orchestration harness, conversational UX, grounding & safety, edge performance & portability, speech technologies, evaluation & benchmarks, reliability operations, product strategy & market, frontier research & scaling, generative media, retrieval & knowledge (RAG/memory/provenance), interpretability & model-behavior science, human-AI adoption & work design, and AI governance & compliance. The founder holds the final word.",
+  "author": "Holding Central",
+  "license": "UNLICENSED",
+  "repository": "https://github.com/marcvlima/holding-central-ai-assets",
+  "keywords": [
+    "ai-adoption",
+    "ai-assistant",
+    "ai-governance",
+    "assistant-ux",
+    "council",
+    "deliberation",
+    "diffusion",
+    "generative-ai",
+    "interpretability",
+    "llm-serving",
+    "moe-gated",
+    "rag",
+    "retrieval",
+    "scaling-laws",
+    "voice-agent"
+  ],
+  "mainDocument": "SKILL.md",
+  "skillGuide": "SKILL.md",
+  "documents": {
+    "skillGuide": "SKILL.md",
+    "roster": "references/roster.md",
+    "sessionBrief": "references/session-brief.md",
+    "warmSweep": "references/warm-sweep.md",
+    "relentlessMethod": "references/relentless-method.md"
+  },
+  "apm": {
+    "type": "process-skill",
+    "category": "deliberation",
+    "tier": "core",
+    "compatibility": {
+      "minVersion": "1.0.0",
+      "platforms": [
+        "vscode",
+        "web",
+        "api",
+        "cli"
+      ]
+    }
+  },
+  "directories": {
+    "references": "references"
+  }
+}
