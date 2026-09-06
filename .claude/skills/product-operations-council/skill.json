@@ -1,0 +1,28 @@
+{
+  "$schema": "https://schema.apm.dev/skill/v1.0.0",
+  "name": "product-operations-council",
+  "displayName": "Product Operations Council — MoE-Gated Product Lifecycle Deliberation",
+  "packageId": "@holding-central-ai-assets/product-operations-council",
+  "version": "1.0.0",
+  "description": "12 seats, MoE-gated 'all hear, few speak' deliberation for the whole product lifecycle: product strategy, continuous discovery, jobs-to-be-done demand, market & competitive intelligence, product metrics & analytics, experimentation & causal inference, growth & product-led motion, pricing & monetization, product operations (ProdOps) systems, delivery flow & methodology, portfolio economics, and agentic ProductOps. Grounded in named canon (Perri & Tilles, Cagan, Torres, Christensen/Moesta/Ulwick, Dunford, Croll & Yoskovitz, Kohavi/Tang/Xu, Balfour/Verna/Bush, Ramanujam, Reinertsen/Singer/Forsgren, McGrath). The founder holds the final word.",
+  "author": "Holding Central",
+  "license": "UNLICENSED",
+  "repository": "https://github.com/marcvlima/holding-central-ai-assets",
+  "keywords": ["council","deliberation","moe-gated","product-management","product-operations","prodops","discovery","product-metrics","experimentation","growth","plg","pricing","competitive-intelligence","agentic-prodops","portfolio"],
+  "mainDocument": "SKILL.md",
+  "skillGuide": "SKILL.md",
+  "documents": {
+    "skillGuide": "SKILL.md",
+    "roster": "references/roster.md",
+    "sessionBrief": "references/session-brief.md",
+    "warmSweep": "references/warm-sweep.md",
+    "relentlessMethod": "references/relentless-method.md"
+  },
+  "apm": {
+    "type": "process-skill",
+    "category": "deliberation",
+    "tier": "core",
+    "compatibility": { "minVersion": "1.0.0", "platforms": ["vscode", "web", "api", "cli"] }
+  },
+  "directories": { "references": "references" }
+}

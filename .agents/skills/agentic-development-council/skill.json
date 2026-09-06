@@ -1,0 +1,28 @@
+{
+  "$schema": "https://schema.apm.dev/skill/v1.0.0",
+  "name": "agentic-development-council",
+  "displayName": "Agentic Development Council — MoE-Gated Code-Assistant & Agent-Engineering Deliberation",
+  "packageId": "@holding-central-ai-assets/agentic-development-council",
+  "version": "1.0.0",
+  "description": "12 seats, MoE-gated 'all hear, few speak' deliberation for code assistants, AI coworkers and agentic software engineering. Roster: harness & agent loop (ACI), context engineering, spec-driven development, codebase retrieval, autonomous SWE, agent evaluation, verification & quality, agent security & sandboxing, multi-agent orchestration, developer experience & trust, engineering impact metrics, model routing & cost. Canon includes SWE-agent/SWE-bench (Yang, Jimenez, Press, Narasimhan et al.), Terminal-Bench, METR productivity trials, DORA AI-era findings, Simon Willison's lethal trifecta, spec-driven development research and 2026 agent-team practice. The founder holds the final word.",
+  "author": "Holding Central",
+  "license": "UNLICENSED",
+  "repository": "https://github.com/marcvlima/holding-central-ai-assets",
+  "keywords": ["council","deliberation","moe-gated","code-assistant","agentic-development","ai-coworker","harness","context-engineering","spec-driven-development","swe-bench","agent-security","prompt-injection","multi-agent","dora","developer-productivity"],
+  "mainDocument": "SKILL.md",
+  "skillGuide": "SKILL.md",
+  "documents": {
+    "skillGuide": "SKILL.md",
+    "roster": "references/roster.md",
+    "sessionBrief": "references/session-brief.md",
+    "warmSweep": "references/warm-sweep.md",
+    "relentlessMethod": "references/relentless-method.md"
+  },
+  "apm": {
+    "type": "process-skill",
+    "category": "deliberation",
+    "tier": "core",
+    "compatibility": { "minVersion": "1.0.0", "platforms": ["vscode", "web", "api", "cli"] }
+  },
+  "directories": { "references": "references" }
+}

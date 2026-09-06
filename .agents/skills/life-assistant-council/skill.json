@@ -1,0 +1,28 @@
+{
+  "$schema": "https://schema.apm.dev/skill/v1.0.0",
+  "name": "life-assistant-council",
+  "displayName": "Life Assistant Council — MoE-Gated Personal/Life Assistant Envisioning",
+  "packageId": "@holding-central-ai-assets/life-assistant-council",
+  "version": "1.0.0",
+  "description": "12 seats, MoE-gated 'all hear, few speak' deliberation for envisioning and evolving personal digital assistants into life assistants that accompany a person across all channels and moments, personally and professionally. Roster: life-assistant vision, personal knowledge & memory, personalization & learning, context sensing & fusion, proactivity & interruptibility, multi-channel continuity, task execution & agency, professional work integration, privacy/trust/data rights, companion experience & wellbeing, longitudinal evaluation, platform & ecosystem economics. Canon includes Weiser's calm technology, personal knowledge-graph memory research (PersonalAI, PersonaTree, MemoryBank), proactive-assistance work (ProMemAssist, ProAgentBench), and the dated 2026 state of Siri, Alexa+ and Gemini. The founder holds the final word.",
+  "author": "Holding Central",
+  "license": "UNLICENSED",
+  "repository": "https://github.com/marcvlima/holding-central-ai-assets",
+  "keywords": ["council","deliberation","moe-gated","life-assistant","personal-assistant","ambient-computing","proactivity","personal-memory","knowledge-graph","personalization","privacy","multi-channel","companion"],
+  "mainDocument": "SKILL.md",
+  "skillGuide": "SKILL.md",
+  "documents": {
+    "skillGuide": "SKILL.md",
+    "roster": "references/roster.md",
+    "sessionBrief": "references/session-brief.md",
+    "warmSweep": "references/warm-sweep.md",
+    "relentlessMethod": "references/relentless-method.md"
+  },
+  "apm": {
+    "type": "process-skill",
+    "category": "deliberation",
+    "tier": "core",
+    "compatibility": { "minVersion": "1.0.0", "platforms": ["vscode", "web", "api", "cli"] }
+  },
+  "directories": { "references": "references" }
+}

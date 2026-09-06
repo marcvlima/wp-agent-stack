@@ -1,0 +1,28 @@
+{
+  "$schema": "https://schema.apm.dev/skill/v1.0.0",
+  "name": "spaces-automation-council",
+  "displayName": "Spaces Automation Council — MoE-Gated Physical-Space Deliberation",
+  "packageId": "@holding-central-ai-assets/spaces-automation-council",
+  "version": "1.0.0",
+  "description": "10 seats, MoE-gated 'all hear, few speak' deliberation for automation of physical spaces — residential, commercial/multi-tenant buildings, and enterprise/campus. Roster: hub/protocol integration, spatial semantics & ontology, entity resolution & knowledge graph, conversational control UX, safety & fail-safe actuation, operational data platform, agent learning & memory, building ops & energy, security/privacy/compliance, integrator & product economics. The founder holds the final word.",
+  "author": "Holding Central",
+  "license": "UNLICENSED",
+  "repository": "https://github.com/marcvlima/holding-central-ai-assets",
+  "keywords": ["council", "deliberation", "moe-gated", "spaces-automation", "home-assistant", "matter-thread", "brick-schema", "building-ops", "iec-62443"],
+  "mainDocument": "SKILL.md",
+  "skillGuide": "SKILL.md",
+  "documents": {
+    "skillGuide": "SKILL.md",
+    "roster": "references/roster.md",
+    "sessionBrief": "references/session-brief.md",
+    "warmSweep": "references/warm-sweep.md",
+    "relentlessMethod": "references/relentless-method.md"
+  },
+  "apm": {
+    "type": "process-skill",
+    "category": "deliberation",
+    "tier": "core",
+    "compatibility": { "minVersion": "1.0.0", "platforms": ["vscode", "web", "api", "cli"] }
+  },
+  "directories": { "references": "references" }
+}

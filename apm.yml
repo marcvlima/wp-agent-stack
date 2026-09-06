@@ -14,6 +14,13 @@ targets:
 includes: auto
 dependencies:
   apm:
+    - marcvlima/holding-central-ai-assets/life-assistant-council
+    - marcvlima/holding-central-ai-assets/agentic-development-council
+    - marcvlima/holding-central-ai-assets/product-operations-council
+    - marcvlima/holding-central-ai-assets/spaces-automation-council
+    - marcvlima/holding-central-ai-assets/ai-ml-implementation-council
+    - marcvlima/holding-central-ai-assets/ai-assistant-council
+    - marcvlima/holding-central-ai-assets/moe-council-builder
   - marcvlima/holding-central-ai-assets/shared-infra-sot
   - marcvlima/holding-central-ai-assets/architecture-council
   - marcvlima/holding-central-ai-assets/product-taxonomy-council

@@ -1,0 +1,49 @@
+{
+  "$schema": "https://schema.apm.dev/skill/v1.0.0",
+  "name": "moe-council-builder",
+  "displayName": "MoE Council Builder — Standing Councils in the MoE-Gated Model",
+  "packageId": "@holding-central-ai-assets/moe-council-builder",
+  "version": "1.1.0",
+  "description": "Build a new standing council in the MoE-gated deliberation model ('all hear, few speak'): expert-persona seats with three-level progressive disclosure (L0 roster always in context, L1 charters loaded only for gated-HOT seats, L2 references on demand), a Moderator that routes the 2-4 most relevant seats per agenda item, a ONE-batched-cheap-model-call warm sweep so every other seat still listens and can be promoted on a substantive cross-domain flag, and a human ratifier holding the final word. The skill carries the generic model spec, an 8-step build process with gates and anti-patterns, and copy-paste templates (roster, seat charter, session brief, warm sweep, Moderator SKILL.md, skill.json manifest). Invoke whenever a new council, advisory board or standing expert-persona panel is being created in any of the holding's organizations, or when someone asks how to run many personas at minimal token cost.",
+  "author": "RiseGen AI",
+  "license": "MIT",
+  "repository": "https://github.com/marcvlima/holding-central-ai-assets",
+  "keywords": [
+    "council",
+    "council-builder",
+    "deliberation",
+    "moe-gated",
+    "mixture-of-experts",
+    "progressive-disclosure",
+    "personas",
+    "governance",
+    "token-economy",
+    "risegen"
+  ],
+  "mainDocument": "SKILL.md",
+  "skillGuide": "SKILL.md",
+  "documents": {
+    "skillGuide": "SKILL.md",
+    "model": "references/model.md",
+    "buildProcess": "references/build-process.md",
+    "templates": "references/templates.md",
+    "relentlessMethod": "references/relentless-method.md"
+  },
+  "usage": {
+    "aiAssistants": "Invoke before creating any new council/standing persona panel; read SKILL.md, then follow references/build-process.md's 8 gated steps using references/templates.md, keeping the hard invariants (one deployable unit; L0/L1/L2 disclosure budgets 15/600/300/500; warm sweep = ONE batched cheapest-model call; every seat has a warm-sweep lens; a named human ratifier; the council governs its own composition). Validate with a measured pilot vs. an all-seats-hot baseline.",
+    "engineers": "The generic MoE-gated deliberation spec, the build process with gates and anti-patterns, and all package templates.",
+    "founders": "A repeatable way to stand up expert councils for any venture at near-flat token cost as rosters grow; every council ends in a human-ratified synthesis."
+  },
+  "apm": {
+    "type": "process-skill",
+    "category": "council-tooling",
+    "tier": "core",
+    "compatibility": {
+      "minVersion": "1.0.0",
+      "platforms": ["vscode", "web", "api", "cli"]
+    }
+  },
+  "directories": {
+    "references": "references"
+  }
+}
