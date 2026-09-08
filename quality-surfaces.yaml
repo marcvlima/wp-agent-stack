@@ -23,4 +23,4 @@ surfaces:
     gate_cmd: "true"
     blast: none
 exemptions:
-  generated: ["**/vendor/**", "**/*.gen.go", "**/node_modules/**"]
+  generated: ["**/vendor/**", "**/*.gen.go", "**/node_modules/**", "**/.claude/skills/**", "**/.agents/skills/**"]

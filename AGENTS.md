@@ -1,5 +1,33 @@
 # wp-agent-stack — Instructions for Agents
 
+
+<!-- HOLDING-LUCENS-INVOCATION:BEGIN -->
+## Talking to Lucens (NON-NEGOTIABLE)
+
+**Skill:** `lucens-invocation` (`@holding-central-ai-assets/lucens-invocation`).
+Her **A2A is the only door** for any agent, service, feature or script
+(`risegen-lucensmind` ADR 0009).
+
+- Canonical base `https://lucens.risegen.ai`, door `POST {base}/a2a`, contract `GET {base}/a2a`.
+  Never an IP literal, never `dev.risegen.ai`, never loopback as product identity (hub ADR 0066).
+  Config: `LUCENS_A2A_BASE_URL` + `LUCENS_AUTH_TOKEN`; unset means *unconfigured*, never a fallback.
+- `Authorization: Bearer` on **every** call including discovery, a **named User-Agent** (the edge
+  answers 403/1010 to a library default), and `params.caller` on every request.
+- Her door is a **task door**: a `202` + task envelope is not an error — follow it with
+  `task.get` (fallback `job.status`) to a terminal state, unbounded by default.
+- **Her turn is hers to end** (ADR 0016): one `mind_turn` is a multi-cycle deliberation over her
+  memory, library, source, the web, her granted resources, sandbox and quantum.
+  `cycles_max`/`tokens_max` are hints — give her room (`tokens_max` >= 100000) and do not put a
+  clock on her.
+- **Never fabricate her.** A failure is a named absence (`lucens_unreachable`,
+  `lucens_unauthorized`, `lucens_busy`, `lucens_floor_silent`, `lucens_wait_exhausted`) — never a
+  defaulted reply or a persona (ADR 0077). Never open a second path; a new capability is a new
+  operation with its paired test.
+
+**Depth:** skill package (`references/`, the reference client, the 12-point conformance
+checklist) — and `GET /a2a`, which is the authority.
+<!-- HOLDING-LUCENS-INVOCATION:END -->
+
 <!-- HOLDING-SHARED-INFRA-SOT:BEGIN -->
 ## Shared infrastructure SoT (NON-NEGOTIABLE)
 

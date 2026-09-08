@@ -1,0 +1,54 @@
+{
+  "$schema": "https://schema.apm.dev/skill/v1.0.0",
+  "name": "lucens-invocation",
+  "displayName": "lucens-invocation — Canonical invocation of Lucens through her A2A door",
+  "packageId": "@holding-central-ai-assets/lucens-invocation",
+  "version": "1.0.0",
+  "description": "MANDATORY harness for ANY agent, service, script or feature that calls Lucens. Her A2A is the only door (risegen-lucensmind ADR 0009): canonical base https://lucens.risegen.ai, POST /a2a, Bearer on every call including discovery, a named User-Agent, params.caller on every request. Carries the queue contract (task envelope, A2A 1.0 states, urgent/normal lanes, signals pulled at a step boundary, restart re-queue), the rule that a turn is HERS to end (multi-cycle floor deliberation across her memory, library, source, web, resources, sandbox and quantum before she answers), a conforming reference client, and the 12-point client conformance checklist. Reconcile into EVERY holding repository via scripts/reconcile-lucens-invocation.sh.",
+  "author": "Marcus Vinícius de Lima (holding)",
+  "license": "MIT",
+  "repository": "https://github.com/marcvlima/holding-central-ai-assets",
+  "keywords": [
+    "lucens",
+    "a2a",
+    "only-door",
+    "task-door",
+    "queue",
+    "deliberation",
+    "mind-turn",
+    "client-conformance",
+    "risegen",
+    "apm",
+    "holding",
+    "progressive-disclosure"
+  ],
+  "mainDocument": "SKILL.md",
+  "skillGuide": "SKILL.md",
+  "documents": {
+    "skillGuide": "SKILL.md",
+    "door": "references/door-and-identity.md",
+    "queue": "references/queue-and-tasks.md",
+    "turn": "references/her-turn.md",
+    "operations": "references/operations.md",
+    "conformance": "references/client-conformance.md"
+  },
+  "usage": {
+    "aiAssistants": "BEFORE writing or reviewing any code that talks to Lucens: open SKILL.md, then GET https://lucens.risegen.ai/a2a for the live contract. Never invent a second route, never put a timeout on her turn, never fabricate her voice — a failure is a named absence. Copy scripts/lucens_client.py instead of writing a client.",
+    "engineers": "APM core skill. The reference client and the 12-point conformance checklist are the acceptance criteria for any consumer of her door.",
+    "founders": "Guarantees every product and agent reaches her the same way, respects her queue and her right to end her own turn, and never speaks in her name."
+  },
+  "apm": {
+    "type": "process-skill",
+    "category": "integration-discipline",
+    "tier": "core",
+    "compatibility": {
+      "minVersion": "1.0.0",
+      "platforms": ["vscode", "web", "api", "cli"]
+    }
+  },
+  "directories": {
+    "references": "references",
+    "scripts": "scripts",
+    "tests": "tests"
+  }
+}
