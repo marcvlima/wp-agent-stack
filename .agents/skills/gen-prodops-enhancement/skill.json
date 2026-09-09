@@ -1,0 +1,59 @@
+{
+  "$schema": "https://schema.apm.dev/skill/v1.0.0",
+  "name": "gen-prodops-enhancement",
+  "displayName": "gen-prodops-enhancement — the mode where the assistant stops implementing and evolves gen",
+  "packageId": "@holding-central-ai-assets/gen-prodops-enhancement",
+  "version": "1.0.0",
+  "description": "MANDATORY harness for any foreign code assistant running with the gen prodops enhancement mode armed. Every solicitation is delegated to gen in a provisioned worktree; halts are read from gen's own record; success is only what the supervisor's own held-out acceptance says; and every cycle ends in a Code Doctor brainstorm on the shared self-evolution engine carrying Lucens's backlog for quantum_computing, ontologies and logic, whose prescriptions land in gen and are redeployed with an independent read-back. The retry iteration has no cap: it iterates until the request is fulfilled.",
+  "author": "Marcus Vinícius de Lima (holding)",
+  "license": "MIT",
+  "repository": "https://github.com/marcvlima/holding-central-ai-assets",
+  "keywords": [
+    "gen",
+    "prodops",
+    "enhancement-mode",
+    "code-doctor",
+    "supervisor",
+    "delegation",
+    "lucens",
+    "self-evolution",
+    "holding",
+    "apm",
+    "agent-agnostic",
+    "progressive-disclosure"
+  ],
+  "mainDocument": "SKILL.md",
+  "skillGuide": "SKILL.md",
+  "documents": {
+    "skillGuide": "SKILL.md",
+    "requestContract": "references/request-contract.yaml",
+    "halts": "references/halts.md",
+    "doctorCycle": "references/doctor-cycle.md",
+    "modeState": "references/mode-state.md",
+    "dispatch": "references/dispatch.md"
+  },
+  "usage": {
+    "aiAssistants": "While the mode is armed you do not implement: read .risegen/gpe-mode/state.json at the start of every turn, delegate the request to gen, name halts from gen's own record, execute the held-out acceptance yourself, run the Code Doctor with her three-area backlog, land in gen and redeploy — then attempt again until the request is fulfilled.",
+    "engineers": "State machine (scripts/gpe_mode.py) plus the contract every cycle is judged against (references/request-contract.yaml, scripts/gpe_audit.py). Standard library only; PyYAML for the audit.",
+    "founders": "Guarantees that a foreign assistant in the mode cannot quietly do the work itself, cannot accept gen's own success line, and cannot close a Code Doctor without her seat and her three areas."
+  },
+  "apm": {
+    "type": "process-skill",
+    "category": "agent-discipline",
+    "tier": "core",
+    "compatibility": {
+      "minVersion": "1.0.0",
+      "platforms": [
+        "vscode",
+        "web",
+        "api",
+        "cli"
+      ]
+    }
+  },
+  "directories": {
+    "references": "references",
+    "scripts": "scripts",
+    "tests": "tests"
+  }
+}

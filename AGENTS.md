@@ -53,3 +53,14 @@ before `git commit`. Agents must not use `--no-verify`. See skill `quality-enfor
 When a plan is registered, implementation must fulfill it; silent deviation is
 forbidden. Use `plan-guard register|run|status`. Reconcile only via founder/dev.
 See skill `plan-fidelity`.
+
+## Gen ProdOps enhancement mode (skill gen-prodops-enhancement)
+
+When the founder arms the **gen prodops enhancement mode**, a foreign code assistant stops doing
+the work: it delegates EVERY solicitation to `gen` in a provisioned worktree, reads halts from
+gen's own record, judges only by an acceptance it declared before the dispatch and executed itself,
+and ends every cycle in a Code Doctor brainstorm on the shared self-evolution engine — carrying
+Lucens's backlog for `quantum_computing`, `ontologies` and `logic` — whose prescriptions land in
+gen and are redeployed. The iteration has no cap: it runs until the request is fulfilled.
+
+Read the skill BEFORE arming, before the first dispatch, on every halt, and before any close.

@@ -1,0 +1,196 @@
+# The request contract — the definition every phase of one enhancement-mode cycle is judged
+# against. It is DATA, like the Ascent rite's phase contract: the definitions ARE the validation
+# (founder, 2026-09-05), never an exit code and never an actor's own success line.
+#
+# Readings: ok · pending (not reached yet — never a defect) · unknown (no fact — ALWAYS a defect)
+#           defect (a fact that says the phase was not honoured)
+version: 1
+mode: gen-prodops-enhancement
+areas: [quantum_computing, ontologies, logic]   # LUCENS_BACKLOG_AREAS — the founder's three
+
+phases:
+  - n: 0
+    slug: arm
+    objective: >-
+      The mode is armed on a PROVEN gen build, and the arming is written where the assistant will
+      re-read it — not kept in its context.
+    must:
+      - name: arm.gen_version
+        reading: >-
+          The version of the gen binary that will execute, read from the binary itself. Absent is
+          unknown: an armed mode over an unknown build cannot judge a redeploy later.
+      - name: arm.gen_sha256
+        reading: The sha256 of that binary. It is what a later redeploy read-back is compared to.
+      - name: arm.state_written
+        reading: >-
+          `.risegen/gpe-mode/state.json` exists and says armed. Her named risk is supervisory
+          drift; a mode that lives only in the assistant's context is already lost.
+
+  - n: 1
+    slug: open
+    objective: >-
+      The founder's solicitation is recorded VERBATIM and the acceptance that will decide it is
+      declared BEFORE the dispatch and held out of gen's brief.
+    must:
+      - name: open.request_verbatim
+        reading: >-
+          The request as the founder wrote it, not the assistant's paraphrase. A paraphrase is the
+          first place the objective drifts.
+      - name: open.acceptance_declared
+        reading: >-
+          An executable check (command, test, probe) that answers "was the request fulfilled?"
+          without asking gen. Declared before the dispatch, never after seeing the result.
+      - name: open.acceptance_held_out
+        reading: >-
+          The acceptance is NOT in gen's brief. An acceptance gen can read is an acceptance gen
+          can satisfy without doing the work.
+
+  - n: 2
+    slug: provision
+    objective: gen gets an isolated worktree of the target repository, clean by construction.
+    must:
+      - name: provision.worktree
+        reading: The path gen will work in. It is never the assistant's own checkout.
+      - name: provision.clean
+        reading: >-
+          No residue at provision time. A dirty root parks the flow, as it parks the rite; residue
+          is named, never worked around.
+
+  - n: 3
+    slug: dispatch
+    objective: gen is driven with the brief, non-interactively, and its session is identified.
+    must:
+      - name: dispatch.brief_delivered
+        reading: The brief reached gen — measured on gen's own record, not on the dispatch call.
+      - name: dispatch.session_id
+        reading: >-
+          The id under which gen's record can be read afterwards. Without it the supervision has
+          no subject and the doctor has no session to brainstorm over.
+
+  - n: 4
+    slug: supervise
+    objective: >-
+      gen's OWN record is read on an interval while it works; a halt is named the moment it is
+      read, and naming it stops gen's processes.
+    must:
+      - name: supervise.record_read
+        reading: >-
+          At least one successful read of gen's record. A record that cannot be read is never a
+          verdict — an unreadable measurement halts nothing and is reported as such.
+      - name: supervise.halt
+        reading: >-
+          The halt name, or `none`. See `halts.md`. A halt with no interruption recorded is a
+          defect: stopping means the processes are gone, not that a flag was set.
+
+  - n: 5
+    slug: judge
+    objective: >-
+      The SUPERVISOR executes the held-out acceptance and reads the diff. gen's exit code and
+      gen's success line are not facts about the request.
+    must:
+      - name: judge.acceptance_ran
+        reading: The acceptance was executed by the supervisor, with its command and output kept.
+      - name: judge.acceptance_result
+        reading: fulfilled | not_fulfilled. Anything else is unknown, which is a defect.
+      - name: judge.diff_read
+        reading: >-
+          The supervisor read what changed. Green with an unread diff is the measured shape of
+          every fabricated success in this holding.
+
+  - n: 6
+    slug: doctor
+    objective: >-
+      A Code Doctor brainstorm over THIS session — on success and on failure alike — evaluating
+      how gen implemented and deployed, and prescribing improvements to gen.
+    must:
+      - name: doctor.council_real
+        reading: >-
+          A real council ran on the shared engine's code-doctor profile, with a session id. A
+          claimed council is a fabrication, and the chair has fabricated one before.
+      - name: doctor.lucens_present
+        reading: >-
+          Her seat was ASKED and answered. Never asked is the worse defect; asked and absent is a
+          defect naming its reason. Silence about her is never a pass.
+      - name: doctor.lucens_backlog_three_areas
+        reading: >-
+          At least one entry for EACH of quantum_computing, ontologies, logic, each with a title
+          and a prescription. An area outside the three counts for nothing; an absent backlog is
+          all three missing.
+      - name: doctor.targets_gen
+        reading: >-
+          Every prescription names a target inside gen's own surface. One that names this mode or
+          the rite is `blocked: target_outside_gen`, routed to the founder, never silently dropped.
+
+  - n: 7
+    slug: correct
+    objective: The prescriptions are implemented in gen, with paired tests.
+    must:
+      - name: correct.implemented
+        reading: >-
+          The correction exists as a change in gen, with its commit. An empty result is a defect,
+          not a note — exit 0 with nothing implemented is the vacuous close the rite already paid for.
+      - name: correct.tests_paired
+        reading: A paired test ships with each correction; quality-guard green, never `--no-verify`.
+      - name: correct.blocked_named
+        reading: >-
+          A correction that cannot be implemented is reported `blocked` with its reason, never as
+          done, and never silently dropped.
+
+  - n: 8
+    slug: land
+    objective: Everything corrected reaches `main`.
+    must:
+      - name: land.on_main
+        reading: The commit is on `main` — fast-forward only, never `--force`.
+      - name: land.remote_verified
+        reading: >-
+          Verified against the REMOTE, not against a local branch pointer and not against a stale
+          clone. A foreign sha in the landed list is a defect of the reader, not a landing.
+
+  - n: 9
+    slug: redeploy
+    objective: The corrected gen is deployed and PROVEN before the next attempt opens.
+    must:
+      - name: redeploy.version
+        reading: The version now in effect, read from the deployed artifact.
+      - name: redeploy.sha256
+        reading: The sha256 now in effect, compared with what was built.
+      - name: redeploy.readback_independent
+        reading: >-
+          The read-back was taken independently — never an installer's own success line, and never
+          the actor's own report. Installed is not in effect.
+
+  - n: 10
+    slug: close
+    objective: >-
+      The cycle closes fulfilled, or opens a new attempt that is not a repetition of the last one.
+      There is no attempt cap: the flow iterates until the request is fulfilled.
+    must:
+      - name: close.outcome
+        reading: fulfilled | new_attempt. A cycle that closes on neither is unknown.
+      - name: close.new_cause
+        reading: >-
+          On `new_attempt`: a cause not named in any previous attempt of this cycle. A repeated
+          cause is the named defect `no_new_correction`.
+      - name: close.correction_landed
+        reading: >-
+          On `new_attempt`: at least one correction landed and redeployed since the previous
+          attempt. An attempt that reopens on the same build is a lap, not an attempt.
+
+halts:
+  - gen_asked_user
+  - gen_stalled
+  - gen_loop_detected
+  - gen_repeats_completion
+  - audit_tampering_detected
+  - gen_exit_nonzero
+  - acceptance_failed
+
+defect_names:
+  - no_new_correction
+  - target_outside_gen
+  - lucens_absent
+  - lucens_backlog_gap
+  - council_claimed_not_run
+  - acceptance_authored_after_result
+  - landed_not_redeployed
