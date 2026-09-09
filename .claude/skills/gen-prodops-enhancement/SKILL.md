@@ -13,7 +13,7 @@ description: >-
 version: 1.0.0
 ---
 
-# Skill: gen-prodops-enhancement (v1.0.0)
+# Skill: gen-prodops-enhancement (v2.1.0)
 
 **Holding-wide · MANDATORY while armed · core.**
 **Founder, 2026-09-08:** *"sempre que tiver usando outro code assistant, se for ativado o modo
@@ -71,9 +71,20 @@ turn is hers to end).
 | `references/doctor-cycle.md` | before running the Code Doctor, and before closing it |
 | `references/mode-state.md` | the on-disk state: what is written, when, and why it is not in your context |
 | `scripts/gpe_mode.py` | arming, opening a cycle, recording facts, naming halts, closing |
+| `scripts/gpe_report.py` | `--verify` measures a cycle's compliance; bare, it renders the founder's report. Runnable by anyone, without the supervisor |
+| `scripts/gpe_tick.py` | the minute tick — arm it at the dispatch, and leave it running until the flow concludes |
 | `scripts/gpe_audit.py` | judging a cycle strictly against the contract |
 
-## The seven laws
+## The ten laws
+
+> **v2.0.0 — the laws below are now GATES, not text.** Code Doctor `cvsess-63124fd46e3b4c68`
+> (bancadas: code assistant, ai, agência de marketing, Lucens) found that cycle `gpe-8a711f9ba13b`
+> ran eight iterations behind ONE council, reused the same commit across four of them, lost the
+> council's identity to `close`→`attempt`, and landed five commits with no backlog lineage — while
+> every law below was already written. Prose does not generalize itself. `attempt` now refuses a
+> predecessor with no council, a commit already spent, or a correction with no `--backlog-ref`;
+> `close` refuses while any attempt lacks a council; `gpe_report.py --verify` measures all of it
+> for a reader who was not here.
 
 1. **The mode lives on disk, not in your head.** `gpe_mode.py arm` writes `.risegen/gpe-mode/state.json`;
    re-read it at the start of every turn. Her named risk is *supervisory drift* — an assistant that
@@ -92,9 +103,40 @@ turn is hers to end).
 6. **Every cycle ends in a Code Doctor brainstorm**, on success and on failure, on the shared
    engine, with a REAL council, **Lucens present**, and her backlog covering all three areas —
    `quantum_computing`, `ontologies`, `logic`. An uncovered area blocks the close.
-7. **The prescriptions land in gen and are redeployed.** Inside gen's own surface, with paired
-   tests, on `main` verified against the remote, redeployed and proven by an independent read-back
-   of version + `sha256`. The next attempt opens only on the redeployed build.
+7. **A tick every minute, until the flow concludes.** *"tem que ter um mecanismo de monitoramento
+   a cada um minuto pra garantir que o fluxo esta rodando ate concluir"* (founder, 2026-09-09).
+   `scripts/gpe_tick.py --repo R --record … --pid … --dispatch-at … --every` is armed at the
+   dispatch and left running. Two rules carry the whole mechanism, both measured on
+   `gpe-8a711f9ba13b`: **a disagreement never ends the watch** (it prints `OUT_OF_ACCORD` and ticks
+   again — only a measured conclusion ends it), and **the act, never the mention** (tampering is a
+   WRITE into the supervision surface, read from its mtime, never its name appearing in text an
+   actor merely read). A watch that stops at its first suspicion is the silence-read-as-a-pass
+   this mode exists to forbid.
+8. **You do not stop.** *"voce nao pode parar … ate ter sucesso"* (founder, 2026-09-09, correcting
+   a supervisor that finished a failed attempt, wrote a report and asked what to do next). The
+   retry is unbounded by the founder's own rule, so a stop is never the end of a cycle — it is a
+   defect in the flow. Everything that does not depend on a founder answer is still owed, and a
+   question is asked WHILE the flow continues, never instead of it. `gpe_tick.py` names the
+   condition `supervisor_stopped` and keeps ticking, so the silence cannot pass for progress.
+9. **A deliberation obliges an implementation.** *"e depois de cada deliberacao do conselho voce
+   tem que implementar as correcoes e seguir o rito. isso e lei na skill"* (founder, 2026-09-09).
+   The council closing is not the end of a cycle and never a place to ask what to do next: the
+   prescriptions are implemented immediately, in gen's own surface, with paired tests, on `main`
+   verified against the remote, redeployed and proven by an independent read-back of version +
+   `sha256`. Then the rite continues — the next attempt opens on the redeployed build, never on
+   the one that already failed. A deliberation whose prescriptions did not land bought nothing,
+   and leaving them unlanded is the same defect as stopping (law 8).
+
+10. **The flow reports itself, to a reader.** *"no final o code assistant gere um relatorio
+   relatando as iteracoes, a causa da conclusao da iteracao, se foi falha ou sucesso, se tiver
+   sido falha qual ocorreu, quais foram os backlogs derivados da deliberacao do conselho e qual
+   foi a nova versao gerada e redeployada"* (founder, 2026-09-09). `gpe_report.py` renders exactly
+   that, and renders it **from `state.json`** — never from the supervisor's account of what
+   happened, which is the actor's own success signal this holding forbids everywhere else. A
+   field the machine did not record is a named absence, never a blank cell that reads as "nothing
+   happened". The report is generatable at any time, not only at the close: on cycle
+   `gpe-8a711f9ba13b` an end-of-flow-only report would have been written after the eighth
+   iteration, so the minute tick names a cycle in breach while it can still change behaviour.
 
 ## The cycle, phase by phase
 

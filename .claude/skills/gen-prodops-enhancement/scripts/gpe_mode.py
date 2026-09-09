@@ -219,7 +219,8 @@ def cmd_acceptance(repo: str, command: str) -> Dict[str, Any]:
 
 
 def cmd_attempt(repo: str, worktree: str, session_id: str = "",
-                cause: str = "", correction: str = "", redeployed: bool = False) -> Dict[str, Any]:
+                cause: str = "", correction: str = "", redeployed: bool = False,
+                backlog_ref: str = "") -> Dict[str, Any]:
     """Open an attempt.
 
     There is no cap (founder, 2026-09-08: it iterates until the request is fulfilled). The bound is
@@ -243,13 +244,48 @@ def cmd_attempt(repo: str, worktree: str, session_id: str = "",
             raise ModeError(
                 "no_new_correction: a new attempt opens on a redeployed correction, never on the "
                 "build that already failed")
+
+        # M1 (Code Doctor cvsess-63124fd46e3b4c68) — the attempt gate. On cycle
+        # gpe-8a711f9ba13b the check above passed eight times while the flow was in breach from
+        # its second iteration: a NEW CAUSE with an OLD COMMIT satisfied it, so attempts 5, 6, 7
+        # and 8 all rode d0a39d3. The cause is what the supervisor writes; the commit is what
+        # actually changed. Only the commit is evidence.
+        #
+        # This is the law the mode landed inside gen as C-BRIEF-01 — an act whose precondition
+        # cannot hold does not exist — finally applied to the harness's own state machine. The
+        # council's finding was that the mode enforced against its subject the very rule it
+        # exempted itself from.
+        spent = {(a.get("correction") or {}).get("commit") for a in attempts}
+        spent.discard(None)
+        spent.discard("")
+        if correction in spent:
+            raise ModeError(
+                "no_new_correction: commit %s already carried a previous attempt of this cycle. "
+                "A new cause with an old commit is not a new correction — find the missing "
+                "correction, land it, redeploy, then reopen." % correction[:12])
+        if not backlog_ref:
+            raise ModeError(
+                "no_backlog_lineage: a correction that lands as CODE carries the backlog item it "
+                "came from. Five commits landed on a product main with none, under an override "
+                "scoped to work that by definition has no code deliverable.")
+        if not (attempts[-1].get("council") or {}).get("session_id"):
+            raise ModeError(
+                "no_council_behind_attempt: attempt %d has no Code Doctor recorded. Every cycle "
+                "ends in a deliberation, on success and on failure, and the next attempt opens "
+                "from it — not from the supervisor's own judgement."
+                % attempts[-1].get("n", len(attempts)))
     attempt = {
         "n": len(attempts) + 1,
         "opened_at": _now(),
         "worktree": worktree,
         "session_id": session_id,
         "cause": cause,
-        "correction": {"commit": correction, "redeployed": bool(redeployed)} if correction else None,
+        "correction": ({"commit": correction, "redeployed": bool(redeployed),
+                        "backlog_ref": backlog_ref} if correction else None),
+        # M2: council identity lives HERE, on the attempt, and never in a cycle-level facts dict.
+        # On gpe-8a711f9ba13b `close --outcome new_attempt` followed by `attempt` wiped the cycle
+        # facts, so a council that genuinely convened reads as None today.
+        "council": {},
         "facts": {"provision.worktree": worktree},
         "halt": None,
     }
@@ -327,6 +363,14 @@ def cmd_doctor(repo: str, session_id: str, backlog: List[Dict[str, Any]],
         "targets_outside_gen": outside,
         "recorded_at": _now(),
     }
+    # M2: the identity is immutable once written. A council that convened is a fact about the
+    # past, and a later transition may not quietly replace it with another session's id.
+    existing = (attempt.get("council") or {}).get("session_id")
+    if existing and session_id and existing != session_id:
+        raise ModeError(
+            "council_identity_immutable: attempt %d already recorded council %s; a deliberation "
+            "that happened cannot be overwritten by another." % (attempt.get("n", 0), existing))
+    attempt["council"] = {"session_id": session_id, "recorded_at": _now()}
     attempt["doctor"] = doctor
     facts = attempt.setdefault("facts", {})
     facts["doctor.council_real"] = bool(session_id)
@@ -345,6 +389,16 @@ def cmd_close(repo: str, outcome: str) -> Dict[str, Any]:
     cycle = current_cycle(state)
     attempt = current_attempt(cycle)
     attempt.setdefault("facts", {})["close.outcome"] = outcome
+    # M2 close-gate (Code Doctor cvsess-63124fd46e3b4c68): a cycle cannot close while any attempt
+    # lacks a council. On gpe-8a711f9ba13b eight attempts closed behind one deliberation, and the
+    # founder ratified the result by hand while the flow was in breach — success masked it.
+    uncouncilled = [a.get("n") for a in cycle.get("attempts", [])
+                    if not (a.get("council") or {}).get("session_id")]
+    if uncouncilled:
+        raise ModeError(
+            "close_without_council: attempt(s) %s carry no Code Doctor. Every cycle ends in a "
+            "deliberation, on success and on failure — a cycle cannot be closed around the ones "
+            "that were skipped." % ", ".join(str(n) for n in uncouncilled))
     if outcome == "fulfilled":
         if attempt["facts"].get("judge.acceptance_result") != "fulfilled":
             raise ModeError(
@@ -393,6 +447,9 @@ def main(argv: Optional[List[str]] = None) -> int:
     p = sub.add_parser("open"); p.add_argument("--request", required=True)
     p = sub.add_parser("acceptance"); p.add_argument("--command", required=True)
     p = sub.add_parser("attempt")
+    p.add_argument("--backlog-ref", default="", dest="backlog_ref",
+                   help="the ABG item this correction came from (M1: a correction that lands as "
+                        "code carries its lineage)")
     p.add_argument("--worktree", required=True)
     p.add_argument("--session-id", default="")
     p.add_argument("--cause", default="")
@@ -426,7 +483,7 @@ def main(argv: Optional[List[str]] = None) -> int:
             out = cmd_acceptance(repo, args.command)
         elif args.cmd == "attempt":
             out = cmd_attempt(repo, args.worktree, args.session_id, args.cause,
-                              args.correction, args.redeployed)
+                              args.correction, args.redeployed, args.backlog_ref)
         elif args.cmd == "fact":
             try:
                 value = json.loads(args.value)

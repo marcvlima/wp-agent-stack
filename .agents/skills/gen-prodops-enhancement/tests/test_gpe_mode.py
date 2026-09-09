@@ -90,6 +90,8 @@ def test_a_cycle_never_closes_fulfilled_on_gens_word(tmp_path):
     gpe_mode.cmd_acceptance(str(tmp_path), "true")
     gpe_mode.cmd_attempt(str(tmp_path), worktree=str(tmp_path / "wt"), session_id="s1")
     gpe_mode.cmd_fact(str(tmp_path), "dispatch.brief_delivered", True)
+    # M2 (cvsess-63124fd46e3b4c68): every attempt carries its deliberation before any close.
+    gpe_mode.cmd_doctor(str(tmp_path), "cvsess-close", backlog=[], prescriptions=[])
     with pytest.raises(gpe_mode.ModeError) as err:
         gpe_mode.cmd_close(str(tmp_path), "fulfilled")
     assert "close_without_acceptance" in str(err.value)
@@ -112,11 +114,17 @@ def test_only_named_halts_exist(tmp_path):
 
 # ---------------------------------------------------------------- R9: unbounded, never vacuous
 
+def _council(tmp_path, sid="cvsess-x"):
+    """M1's precondition: a deliberation stands behind the attempt being superseded."""
+    gpe_mode.cmd_doctor(str(tmp_path), sid, backlog=[], prescriptions=[])
+
+
 def test_a_new_attempt_needs_a_new_cause_and_a_redeployed_correction(tmp_path):
     arm(tmp_path)
     gpe_mode.cmd_open(str(tmp_path), "do the thing")
     gpe_mode.cmd_attempt(str(tmp_path), worktree=str(tmp_path / "wt1"))
     gpe_mode.cmd_halt(str(tmp_path), "gen_stalled")
+    gpe_mode.cmd_doctor(str(tmp_path), "cvsess-novelty", backlog=[], prescriptions=[])
 
     with pytest.raises(gpe_mode.ModeError) as err:
         gpe_mode.cmd_attempt(str(tmp_path), worktree=str(tmp_path / "wt2"))
@@ -129,7 +137,7 @@ def test_a_new_attempt_needs_a_new_cause_and_a_redeployed_correction(tmp_path):
 
     second = gpe_mode.cmd_attempt(str(tmp_path), worktree=str(tmp_path / "wt2"),
                                   cause="brief_missing_repo", correction="abc1234",
-                                  redeployed=True)
+                                  redeployed=True, backlog_ref="#2901")
     assert second["n"] == 2
 
     gpe_mode.cmd_halt(str(tmp_path), "gen_stalled")
@@ -143,9 +151,14 @@ def test_there_is_no_attempt_cap(tmp_path):
     arm(tmp_path)
     gpe_mode.cmd_open(str(tmp_path), "do the thing")
     gpe_mode.cmd_attempt(str(tmp_path), worktree=str(tmp_path / "wt0"))
+    # M1 (cvsess-63124fd46e3b4c68) now requires a council behind each predecessor, a commit no
+    # earlier attempt spent, and backlog lineage. The founder's rule is untouched: there is no
+    # CEILING. A well-formed iteration opens forever; only a vacuous one is refused.
     for n in range(1, 12):
+        gpe_mode.cmd_doctor(str(tmp_path), "cvsess-%d" % n, backlog=[], prescriptions=[])
         gpe_mode.cmd_attempt(str(tmp_path), worktree=str(tmp_path / ("wt%d" % n)),
-                             cause="cause-%d" % n, correction="c%d" % n, redeployed=True)
+                             cause="cause-%d" % n, correction="c%d" % n, redeployed=True,
+                             backlog_ref="#29%02d" % n)
     state = gpe_mode.read_state(str(tmp_path))
     assert len(state["cycles"][-1]["attempts"]) == 12
 
