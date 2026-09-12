@@ -82,6 +82,28 @@ Senior Copywriter when any words ship**.
      `<ProductName> is part of the <Ecosystem> ecosystem`.
    - Product identity first; ecosystem affiliation second. Human chrome — never raw
      machine codes (`AUTH_REQUIRED`, enums) as primary user copy.
+8. **An interface change is never delivered without a planned LAYOUT (HARD RULE — founder,
+   2026-09-07).** Whenever the session's trigger touches an interface — a new surface, a new
+   element, a tab, a card, a state, or a change to an existing one — the panel MUST plan the
+   layout itself, not only the structure and the strings. The layout is planned **on the brand
+   system and on the design system** (tokens, components, spacing scale, grid, breakpoints,
+   states, motion) and on every other aspect the seats already gate: information architecture,
+   navigation and wayfinding, taxonomy, copy, accessibility and cross-surface consistency.
+   Concretely, the deliverable carries, for each option:
+   - **where it lives** in the current IA and route tree, and what it displaces;
+   - **the grid**: regions and their order, what is primary, what is secondary, what collapses;
+   - **the states**: empty, loading/in-progress, partial, error, read-only/historical;
+   - **responsive behaviour** at the design system's own breakpoints — never "it adapts";
+   - **the components reused** (named, from the design system) and any new element, which must
+     go through the design system's element protocol before it ships;
+   - **the tokens** it uses for colour, spacing, radius, type and motion — no local values;
+   - **accessibility**: focus order, keyboard path, what a screen reader announces.
+   A session that ends with structure and copy but no layout is **incomplete**, and the
+   invoking agent must convene the panel again rather than inventing the placement. Origin: a
+   session fixed IA, names, states and signed copy for a new tab and left the grid unplanned;
+   the founder called it out — *"se o acionamento dela envolver mudanca de interface sempre tem
+   que ser planejado layout com base no branding system e desing system e os outros aspectos
+   que suas cadeiras validam."*
 
 ## Grounding: brand + design system (or a new brand)
 

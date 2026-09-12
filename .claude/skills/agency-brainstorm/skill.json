@@ -3,7 +3,7 @@
   "name": "agency-brainstorm",
   "displayName": "Agency Brainstorm — Brand & UI Decision Room",
   "packageId": "@holding-central-ai-assets/agency-brainstorm",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "Standing senior agency for brand, marketing, UX/UI, motion and digital-platform decisions, chaired by the Managing Partner. 16-role standing panel now including a Lead Information Architect, a Taxonomy & Metadata Lead / Content Ontologist, a Navigation & Wayfinding Designer, a Design-System & UI Consistency Lead (DesignOps/Platform Design Systems governance) and an Experience Governance Executive (CXO), so that how information and functionality are organised, how navigation is structured, and how consistent layout and interaction are across every interface are all gated seats. Blocking Phase 0 access gate: the panel must load the organisation's brand system and ALL of its design systems before any round. Senior Copywriter gates every user-facing string.",
   "author": "Marcus (holding)",
   "license": "MIT",

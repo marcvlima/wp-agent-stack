@@ -44,6 +44,18 @@ For each option:
 - **Brand & design-system compliance** — how it honors (or deliberately, justifiably bends) them
 - **Competitive positioning** — how it stands vs the benchmarked frontier
 - **Experience & motion** — layout logic, scroll choreography, hover/micro-interactions
+- **Layout (REQUIRED whenever the decision touches an interface — SKILL.md rule 8)** — planned on
+  the brand system and the design system, never left to the implementer:
+  - **Placement**: where it lives in the IA and the route tree, and what it displaces
+  - **Grid**: the regions in order, primary vs secondary, what collapses first
+  - **States**: empty · loading/in-progress · partial · error · read-only/historical
+  - **Responsive**: the behaviour at the design system's own breakpoints, named — never "adapts"
+  - **Components**: the design-system components reused, by name; any NEW element goes through
+    the design system's element protocol before it ships
+  - **Tokens**: colour, spacing, radius, type and motion tokens used — no local values
+  - **Accessibility**: focus order, keyboard path, what a screen reader announces
+  A deliverable that changes an interface and carries no layout is INCOMPLETE and goes back to
+  the panel.
 - **Copy (verbatim)** — every user-visible string proposed for this option, including empty
   states, CTAs, banners, ecosystem/affiliation lines. Must satisfy copy laws
   (`roster.md`): **subject before affiliation** — never bare "Part of …" without naming

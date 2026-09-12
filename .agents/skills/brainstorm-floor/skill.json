@@ -1,0 +1,53 @@
+{
+  "$schema": "https://schema.apm.dev/skill/v1.0.0",
+  "name": "brainstorm-floor",
+  "displayName": "Brainstorm Floor — a real discussion every seat hears",
+  "packageId": "@holding-central-ai-assets/brainstorm-floor",
+  "version": "1.0.0",
+  "description": "The shared floor for a real brainstorm: seats are councils or individuals and never deliberate in isolation. Every seat's round brief carries the complete append-only floor verbatim; every manifestation is visible to every other seat before the next round opens. Research is initiated only by a seat and returns attributed to it. The host is impartial, fenced by a closed verb set, holds no position and authors no decision; without convergence the close escalates to the founder. This is the mechanism D31 describes. Invoke whenever a multi-seat brainstorm is opened — including every failure brainstorm.",
+  "author": "RiseGen AI",
+  "license": "MIT",
+  "repository": "https://github.com/marcvlima/holding-central-ai-assets",
+  "keywords": [
+    "brainstorming",
+    "floor",
+    "deliberation",
+    "council",
+    "consensus",
+    "impartial-host",
+    "research",
+    "d31",
+    "lucens",
+    "risegen"
+  ],
+  "mainDocument": "SKILL.md",
+  "skillGuide": "SKILL.md",
+  "documents": {
+    "skillGuide": "SKILL.md",
+    "protocol": "references/protocol.md",
+    "seats": "references/seats.md",
+    "hostConduct": "references/host-conduct.md",
+    "research": "references/research.md",
+    "record": "references/record.md",
+    "floor": "scripts/floor.py"
+  },
+  "usage": {
+    "aiAssistants": "MANDATORY whenever a multi-seat brainstorm is opened (including every D31 failure). You are the impartial host: assemble the facts pack, convene the seats, relay the complete floor verbatim, execute only the research a seat requested, enforce the protocol, write the record. Never hold a position, never rank, never break a tie, never author a decision. Read SKILL.md, then run scripts/floor.py.",
+    "engineers": "The floor protocol, the append-only floor.jsonl schema, the closed host verb set, and the verifier that names every invariant violation.",
+    "founders": "A real discussion: every seat hears every seat, research is seat-asked, the host is impartial, and a floor that does not converge comes to you — never a host call."
+  },
+  "apm": {
+    "type": "process-skill",
+    "category": "council-tooling",
+    "tier": "core",
+    "compatibility": {
+      "minVersion": "1.0.0",
+      "platforms": ["vscode", "web", "api", "cli"]
+    }
+  },
+  "directories": {
+    "references": "references",
+    "scripts": "scripts",
+    "tests": "tests"
+  }
+}
