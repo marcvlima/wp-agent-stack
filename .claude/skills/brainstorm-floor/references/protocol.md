@@ -59,6 +59,7 @@ is rejected at `post` and named by `verify` (`host_verb_violation`,
 | Type | Typical phase | Must |
 |---|---|---|
 | `position` | open (also cross, as a restatement) | the seat's claim and the evidence it rests on |
+| `proposal` | open or cross | a candidate solution, named as such; the only source of rows in the record's candidate-solutions table |
 | `research_request` | open or cross | what to look up and why; never authored by the host |
 | `question` | open or cross | `addressed_to` names present seats; those seats must answer before the round closes |
 | `concede` | cross | what is conceded, and why; may `answers` a conflicting `position` |
@@ -113,7 +114,9 @@ or `objection` with a reason. An `objection` must be answered by a seat
 
 `floor.py close --outcome consensus|consensus_with_dissent|no_convergence`
 writes `record.md` and a host `record` entry. The outcome is derived from
-the seats:
+the seats, by one function shared with `verify`. `close` refuses
+(`outcome_mismatch`, naming both) when `--outcome` contradicts that
+derivation, before writing anything:
 
 - every present seat `support`s, no unanswered `objection` → `consensus`
 - support plus named, answered objections that were not conceded →
@@ -122,6 +125,13 @@ the seats:
 
 The host does not post `decision`. A seat may. A `decision` must cite
 seat entries by `seq`. Under `no_convergence` there is no chosen option.
+`chosen` is never taken from a `support` body's first line; without a
+seat `decision` entry the record says so. The candidate-solutions table
+is built only from `proposal` entries.
+
+A second `close` is refused. `reclose --reason … --outcome …` supersedes
+a defective close on the record (protocol entry + new `record` entry;
+`record.md` rewritten; nothing deleted) and runs the same refusal.
 
 ## The round brief (invariant 1)
 

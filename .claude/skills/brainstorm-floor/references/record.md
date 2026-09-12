@@ -7,16 +7,25 @@ entry on the floor. The record is what the seats did, not a host essay.
 
 | `--outcome` | When | Decision section |
 |---|---|---|
-| `consensus` | every present seat `support`s; no unanswered `objection` | `chosen` cites the supporting seat `seq`s |
-| `consensus_with_dissent` | there is support; named seats objected, those objections were answered, and they did not concede | `chosen` plus **named** dissent (seat ids and their `seq`s) |
-| `no_convergence` | the seats did not converge | **no chosen option**; `escalated_to_ratifier: yes`. Never a host call. |
+| `consensus` | every present seat `support`s; no unanswered `objection` | supporting seats and `seq`s; `chosen` only if a seat authored a `decision` entry |
+| `consensus_with_dissent` | there is support; named seats objected, those objections were answered, and they did not concede | supporting and objecting seats and `seq`s; **named** dissent; `chosen` only from a seat `decision` |
+| `no_convergence` | the seats did not converge | **no chosen option** (`chosen: none`); `escalated_to_ratifier: yes`. Never a host call. |
 
 The host passes `--outcome` as a derivation from the floor, not as a
-preference. `verify` names `outcome_mismatch` when the flag disagrees
-with the seats, `host_authored_decision` when a `decision` is hosted,
+preference. `close` and `verify` share one derivation. `close` refuses
+with `outcome_mismatch` (naming the requested outcome and what the
+seats yield) **before writing anything** when the flag disagrees with
+the seats. A close that cannot pass `verify` does not happen. `verify`
+names `outcome_mismatch` when a recorded outcome disagrees with the
+seats, `host_authored_decision` when a `decision` is hosted,
 `missing_escalation` when `no_convergence` lacks
 `escalated_to_ratifier`, and `host_call_without_convergence` when a
 chosen option appears under `no_convergence`.
+
+`reclose --reason … --outcome …` corrects a defective close. It appends
+a `protocol` entry (previous close superseded, and why), rewrites
+`record.md`, and appends a new `record` entry. It never deletes. It
+runs the same derived-outcome refusal as `close`.
 
 ## Required headings
 
@@ -52,6 +61,8 @@ producible from this skill. Canonical shape:
 
 ## Decision
 - chosen: …
+- supporting: …
+- objecting: …
 - named dissent: …
 - outcome: consensus | consensus_with_dissent | no_convergence
 - escalated_to_ratifier: yes | no
@@ -75,12 +86,25 @@ Seats section. Lucens, when present, still uses the D31 Lucens line
 
 ## Decision section rules
 
-- `chosen` is a proposal a seat supported, cited by `seq`. It is not a
-  host ranking of seats.
-- Under `no_convergence`, `chosen` is omitted or explicitly `none`;
+- `chosen` is never synthesised from a `support`, `position`, `refine`,
+  or any other entry's prose (not even the first line). A named
+  decision appears only when a seat authored a `decision` entry; when
+  there is none, the record says
+  `chosen: (no seat authored a decision entry)`.
+- The Decision section lists supporting seats and their `seq`s, and
+  objecting seats and their `seq`s. That is the floor's tally. It is
+  not a host ranking of seats.
+- Under `no_convergence`, `chosen` is explicitly `none`;
   `escalated_to_ratifier` is `yes`; the founder is the next reader.
 - Named dissent lists seat ids. Omitting a dissent is a host decision
   and a failed record.
+
+## Candidate solutions table
+
+The table is built **only** from entries of type `proposal`. It is
+never the first line of arbitrary seat prose. When the floor has no
+`proposal` entries the section says
+`(no proposal entries on this floor - see the seats' positions)`.
 
 ## Path
 

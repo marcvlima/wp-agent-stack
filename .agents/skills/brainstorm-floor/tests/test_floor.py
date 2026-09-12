@@ -119,6 +119,19 @@ class FloorSession:
     def close(self, outcome):
         return _run(["close", "--dir", str(self.dir), "--outcome", outcome])
 
+    def reclose(self, outcome, reason):
+        return _run(
+            [
+                "reclose",
+                "--dir",
+                str(self.dir),
+                "--outcome",
+                outcome,
+                "--reason",
+                reason,
+            ]
+        )
+
     def entries(self):
         return floor.load_entries(self.dir)
 
@@ -222,17 +235,8 @@ def legal_through_converge(sess: FloorSession, *, dissent=False, no_converge=Fal
             phase="converge",
         )
         assert o[0] == 0, o
-        # answer the objection so it is not hanging, but they still disagree
-        obj_seq = [e["seq"] for e in sess.entries() if e["type"] == "objection"][-1]
-        a2 = sess.post(
-            a,
-            "hold",
-            4,
-            "Hold the writer-first plan; readers can follow.",
-            phase="converge",
-            answers=[obj_seq],
-        )
-        assert a2[0] == 0, a2
+        # leave the objection hanging: that is no_convergence, not
+        # consensus_with_dissent (answered objections that were not conceded).
         return
     if dissent:
         s = sess.post(a, "support", 4, "Enforce shape at the write boundary.", phase="converge")

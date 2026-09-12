@@ -196,13 +196,21 @@ python3 brainstorm-floor/scripts/floor.py pending --dir "$DIR"
 python3 brainstorm-floor/scripts/floor.py close --dir "$DIR" \
   --outcome consensus|consensus_with_dissent|no_convergence
 python3 brainstorm-floor/scripts/floor.py verify --dir "$DIR"   # must exit 0
+
+# A close that cannot pass verify is refused. To correct a defective close:
+python3 brainstorm-floor/scripts/floor.py reclose --dir "$DIR" \
+  --outcome consensus|consensus_with_dissent|no_convergence \
+  --reason "<why the previous close is superseded>"
 ```
 
 `close` writes `record.md`. Outcome is **derived from the seats**, not
-chosen by you. All present seats `support` and no unanswered `objection`
-→ `consensus`. Support plus named, answered objections that were not
-conceded → `consensus_with_dissent`. Otherwise → `no_convergence` and you
-stop for the founder.
+chosen by you — `close` and `verify` share one derivation, and `close`
+refuses when the flag contradicts it. All present seats `support` and no
+unanswered `objection` → `consensus`. Support plus named, answered
+objections that were not conceded → `consensus_with_dissent`. Otherwise
+→ `no_convergence` and you stop for the founder. The record lists
+supporting and objecting seats; it never synthesises `chosen` from a
+`support` body's first line.
 
 ## Invoking a seat
 

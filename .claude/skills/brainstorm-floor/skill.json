@@ -3,7 +3,7 @@
   "name": "brainstorm-floor",
   "displayName": "Brainstorm Floor — a real discussion every seat hears",
   "packageId": "@holding-central-ai-assets/brainstorm-floor",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "The shared floor for a real brainstorm: seats are councils or individuals and never deliberate in isolation. Every seat's round brief carries the complete append-only floor verbatim; every manifestation is visible to every other seat before the next round opens. Research is initiated only by a seat and returns attributed to it. The host is impartial, fenced by a closed verb set, holds no position and authors no decision; without convergence the close escalates to the founder. This is the mechanism D31 describes. Invoke whenever a multi-seat brainstorm is opened — including every failure brainstorm.",
   "author": "RiseGen AI",
   "license": "MIT",
