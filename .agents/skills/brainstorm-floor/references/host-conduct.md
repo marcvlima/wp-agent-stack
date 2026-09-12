@@ -61,14 +61,40 @@ not "look something up to help the discussion along". Details:
 ## Close
 
 Outcome is derived from seat `support` / `objection` / `concede` /
-`hold`, not chosen. If the seats have not converged, the host writes
-`no_convergence` and `escalated_to_ratifier` and **stops**. Waiting for
-the founder is the job. Picking an option "so work can continue" is a
-host call, and a violation of invariant 6.
+`hold`, not chosen. `close` computes that derivation with the same
+function `verify` uses and **refuses** (`outcome_mismatch`, naming both
+the requested outcome and what the seats yield) when `--outcome`
+contradicts it — before writing `record.md`, before appending a
+`record` entry, before marking the session closed. A close that cannot
+pass `verify` must not happen.
+
+If the seats have not converged, the host writes `no_convergence` and
+`escalated_to_ratifier` and **stops**. Waiting for the founder is the
+job. Picking an option "so work can continue" is a host call, and a
+violation of invariant 6.
+
+The record's `chosen` is never synthesised from a `support` (or any
+other) entry's prose. The Decision section lists supporting seats and
+their `seq`s, and objecting seats and their `seq`s. A named decision
+appears only when a seat authored a `decision` entry; otherwise
+`chosen: (no seat authored a decision entry)`. Under `no_convergence`,
+`chosen: none`. Taking the first line of the first support as the
+chosen solution is a host-authored decision.
+
+The candidate-solutions table is built only from `proposal` entries. If
+there are none, the section says so rather than quoting first lines of
+arbitrary prose.
 
 A `decision` entry, if one exists, is authored by a seat and cites seat
 `seq`s. The host `record` entry may point at those `seq`s; it may not
 be the decision.
+
+A second `close` is refused (`session_closed`). To correct a defective
+close, `reclose --reason … --outcome …`: it appends a `protocol` entry
+recording that the previous close was superseded and why, rewrites
+`record.md`, and appends a new `record` entry. It never deletes. It
+runs the same derived-outcome refusal as `close`. The correction is
+itself on the record.
 
 ## Anti-patterns (concrete)
 
@@ -103,9 +129,11 @@ Each of these has happened in spirit. Each is a failed floor.
    complete. — fabrication. Post `seat_absent` / `lucens_busy`.
 
 8. **Host `decision`.** `close` with a chosen option no seat supported,
-   or a `decision` entry authored by `host`. — `host_authored_decision`.
-   Under no convergence, the Decision section of `record.md` is
-   `no_convergence` + `escalated_to_ratifier` and no chosen number.
+   a `decision` entry authored by `host`, or a `chosen` line taken from
+   a `support` entry's first line (or any other prose the host selected).
+   — `host_authored_decision`. Under no convergence, the Decision
+   section of `record.md` is `no_convergence` + `escalated_to_ratifier`
+   and `chosen: none`.
 
 9. **Private side channel.** A subagent "checks in" with the host; the
    host uses that to steer the next round without posting it. If it

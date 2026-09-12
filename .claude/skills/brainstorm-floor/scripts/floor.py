@@ -5,7 +5,7 @@ Standard library only. The host is not a seat: this CLI records the floor,
 enforces the protocol, and writes the record. It never searches the web and
 it never decides.
 
-Subcommands: open, post, read, round-brief, pending, verify, close.
+Subcommands: open, post, read, round-brief, pending, verify, close, reclose.
 """
 from __future__ import annotations
 
@@ -53,6 +53,7 @@ LUCENS_IDS = frozenset({"lucens", "lucens.risegen.ai"})
 SEAT_DELIBERATIVE = frozenset(
     {
         "position",
+        "proposal",
         "research_request",
         "question",
         "concede",
@@ -69,6 +70,7 @@ TYPE_PHASE = {
     "agenda": "convene",
     "convene": "convene",
     "position": "open",
+    "proposal": "open",
     "research_result": "research",
     "concede": "cross",
     "refine": "cross",
@@ -135,6 +137,11 @@ V_LUCENS_ABSENCE = "lucens_absence_unnamed"
 V_FABRICATED = "fabricated_seat"
 V_OUTCOME_MISMATCH = "outcome_mismatch"
 V_UNANSWERED_OBJECTION = "unanswered_objection"
+
+CHOSEN_NO_DECISION = "(no seat authored a decision entry)"
+NO_PROPOSAL_NOTE = (
+    "(no proposal entries on this floor - see the seats' positions)"
+)
 
 
 class ProtocolError(Exception):
@@ -579,6 +586,15 @@ def verify_entries(
                 (V_HOST_CALL, "no_convergence close records a chosen option")
             )
 
+    derived = derive_outcome(entries, roster)
+    if outcome_contradicts_derived(effective_outcome, derived):
+        violations.append(
+            (
+                V_OUTCOME_MISMATCH,
+                f"recorded {effective_outcome} but seats yield {derived}",
+            )
+        )
+
     if effective_outcome in ("consensus", "consensus_with_dissent"):
         supports = [
             e
@@ -591,14 +607,6 @@ def verify_entries(
                 (
                     V_HOST_DECISION,
                     f"{effective_outcome} recorded with no seat support entries",
-                )
-            )
-        derived = derive_outcome(entries, roster)
-        if derived and derived != effective_outcome:
-            violations.append(
-                (
-                    V_OUTCOME_MISMATCH,
-                    f"recorded {effective_outcome} but seats yield {derived}",
                 )
             )
 
@@ -648,6 +656,42 @@ def derive_outcome(
     if present <= supporters:
         return "consensus"
     return "no_convergence"
+
+
+def outcome_contradicts_derived(
+    requested: Optional[str], derived: Optional[str]
+) -> bool:
+    """True when a stated outcome disagrees with what the seats yield.
+
+    ``derived is None`` means the floor has not reached converge, so only
+    ``no_convergence`` is acceptable as a close; a consensus claim is a
+    contradiction. Used by both ``close``/``reclose`` and ``verify``.
+    """
+    if not requested:
+        return False
+    if derived == requested:
+        return False
+    if derived is None and requested == "no_convergence":
+        return False
+    return True
+
+
+def assert_outcome_matches_derived(
+    entries: Sequence[Dict[str, Any]],
+    roster: Sequence[Dict[str, str]],
+    requested: str,
+) -> Optional[str]:
+    """Return the derived outcome, or raise if ``requested`` contradicts it.
+
+    A close that cannot pass ``verify`` must not happen: this is the gate.
+    """
+    derived = derive_outcome(entries, roster)
+    if outcome_contradicts_derived(requested, derived):
+        raise ProtocolError(
+            V_OUTCOME_MISMATCH,
+            f"requested {requested} but seats yield {derived}",
+        )
+    return derived
 
 
 def verify_dir(session_dir: str | Path) -> List[Tuple[str, str]]:
@@ -719,16 +763,66 @@ def _seat_summary(seat: Dict[str, str], entries: Sequence[Dict[str, Any]]) -> st
     return f"[{last.get('type')}] {body}" if body else f"[{last.get('type')}]"
 
 
-def _proposals(entries: Sequence[Dict[str, Any]]) -> List[str]:
-    seen = []
+def _proposal_rows(
+    entries: Sequence[Dict[str, Any]],
+) -> List[Tuple[Dict[str, Any], str]]:
+    """Candidate-table rows from ``proposal`` entries only. Never first lines of arbitrary prose."""
+    rows: List[Tuple[Dict[str, Any], str]] = []
     for e in entries:
-        if e.get("type") in ("support", "position", "refine") and e.get(
-            "author_kind"
-        ) in ("council", "individual"):
-            line = _first_line(e.get("body") or "")
-            if line and line not in seen:
-                seen.append(line)
-    return seen
+        if e.get("type") != "proposal":
+            continue
+        if e.get("author_kind") not in ("council", "individual"):
+            continue
+        line = _first_line(e.get("body") or "")
+        if line:
+            rows.append((e, line))
+    return rows
+
+
+def _side_list(entries: Sequence[Dict[str, Any]], typ: str) -> str:
+    items = [
+        e
+        for e in entries
+        if e.get("type") == typ
+        and e.get("author_kind") in ("council", "individual")
+    ]
+    if not items:
+        return "none"
+    return ", ".join(f"{e.get('author')} (seq {e.get('seq')})" for e in items)
+
+
+def _seat_decision_entries(
+    entries: Sequence[Dict[str, Any]],
+) -> List[Dict[str, Any]]:
+    return [
+        e
+        for e in entries
+        if e.get("type") == "decision"
+        and e.get("author_kind") in ("council", "individual")
+        and not is_host(e.get("author") or "", e.get("author_kind") or "")
+    ]
+
+
+def _chosen_value(entries: Sequence[Dict[str, Any]], outcome: str) -> str:
+    """Named decision from a seat ``decision`` entry, or an explicit none.
+
+    Never taken from a support/position/refine body's first line.
+    """
+    if outcome == "no_convergence":
+        return "none"
+    decisions = _seat_decision_entries(entries)
+    if not decisions:
+        return CHOSEN_NO_DECISION
+    parts: List[str] = []
+    for d in decisions:
+        body = (d.get("body") or "").strip().replace("\n", " ")
+        if len(body) > 240:
+            body = body[:237] + "..."
+        if body:
+            parts.append(f"seq {d['seq']} by {d['author']}: {body}")
+        else:
+            parts.append(f"seq {d['seq']} by {d['author']}")
+    return "; ".join(parts)
 
 
 def render_record(
@@ -785,46 +879,46 @@ def render_record(
         "cost to the iteration | resilience | fluidity | speed |"
     )
     lines.append("|---|---|---|---|---|---|---|")
-    proposals = _proposals(entries)
-    if proposals:
-        for i, p in enumerate(proposals, 1):
-            cell = p.replace("|", "/")
+    proposal_rows = _proposal_rows(entries)
+    if proposal_rows:
+        for i, (entry, solution) in enumerate(proposal_rows, 1):
+            cell = (
+                f"seq {entry['seq']} ({entry.get('author')}): {solution}"
+            ).replace("|", "/")
             lines.append(f"| {i} | {cell} | n/a | n/a | n/a | n/a | n/a |")
     else:
-        lines.append("|  |  |  |  |  |  |  |")
+        lines.append(NO_PROPOSAL_NOTE)
     lines.append("")
     lines.append("## Decision")
-    supports = [
-        e
-        for e in entries
-        if e.get("type") == "support"
-        and e.get("author_kind") in ("council", "individual")
-    ]
     objections = [
         e
         for e in entries
         if e.get("type") == "objection"
         and e.get("author_kind") in ("council", "individual")
     ]
-    support_seqs = ", ".join(str(e["seq"]) for e in supports) or "none"
     dissenters = ", ".join(
         f"{e.get('author')} (seq {e.get('seq')})" for e in objections
     ) or "none"
+    chosen = _chosen_value(entries, outcome)
+    supporting = _side_list(entries, "support")
+    objecting = _side_list(entries, "objection")
+    lines.append(f"- chosen: {chosen}")
+    lines.append(f"- supporting: {supporting}")
+    lines.append(f"- objecting: {objecting}")
     if outcome == "no_convergence":
-        lines.append("- chosen: none")
         lines.append(f"- named dissent: {dissenters}")
         lines.append("- outcome: no_convergence")
         lines.append("- escalated_to_ratifier: yes")
     elif outcome == "consensus_with_dissent":
-        chosen = _first_line(supports[0]["body"], "see supporting seqs") if supports else "none"
-        lines.append(f"- chosen: {chosen} — supporting seqs {support_seqs}")
         lines.append(f"- named dissent: {dissenters}")
         lines.append("- outcome: consensus_with_dissent")
         lines.append("- escalated_to_ratifier: no")
     else:
-        chosen = _first_line(supports[0]["body"], "see supporting seqs") if supports else "none"
-        lines.append(f"- chosen: {chosen} — supporting seqs {support_seqs}")
-        lines.append("- named dissent: none" if dissenters == "none" else f"- named dissent: {dissenters}")
+        lines.append(
+            "- named dissent: none"
+            if dissenters == "none"
+            else f"- named dissent: {dissenters}"
+        )
         lines.append("- outcome: consensus")
         lines.append("- escalated_to_ratifier: no")
     lines.append("- rows: n/a")
@@ -1190,16 +1284,14 @@ def cmd_verify(args: argparse.Namespace, stdout: TextIO, stderr: TextIO) -> int:
     return 1
 
 
-def cmd_close(args: argparse.Namespace, stdout: TextIO, stderr: TextIO) -> int:
-    outcome = args.outcome
+def _close_protocol_gates(
+    entries: Sequence[Dict[str, Any]],
+    roster: Sequence[Dict[str, str]],
+    outcome: str,
+) -> Optional[str]:
+    """Refuse a close that cannot pass verify. Writes nothing."""
     if outcome not in OUTCOMES:
         raise ProtocolError("bad_outcome", outcome)
-    paths = session_paths(args.dir)
-    entries = load_entries(args.dir)
-    meta = load_session_meta(args.dir)
-    roster = list(meta.get("seats") or [])
-    if meta.get("closed"):
-        raise ProtocolError("session_closed", "already closed")
     if len(cross_round_numbers(entries)) < 2:
         raise ProtocolError(
             V_INSUFFICIENT_CROSS, "minimum 2 cross rounds before close"
@@ -1211,53 +1303,24 @@ def cmd_close(args: argparse.Namespace, stdout: TextIO, stderr: TextIO) -> int:
         raise ProtocolError(
             V_UNANSWERED_Q, f"seq={q.get('seq')} unanswered at close"
         )
-    hanging_obj = unanswered_objections(entries, present)
-    if outcome == "consensus" and hanging_obj:
-        raise ProtocolError(
-            V_UNANSWERED_OBJECTION,
-            f"seq={hanging_obj[0].get('seq')} objection unanswered",
-        )
-    supports = [
-        e
-        for e in entries
-        if e.get("type") == "support"
-        and e.get("author_kind") in ("council", "individual")
-    ]
-    if outcome in ("consensus", "consensus_with_dissent") and not supports:
-        raise ProtocolError(
-            V_HOST_DECISION, f"{outcome} with no seat support is a host call"
-        )
-    objectors = [
-        e
-        for e in entries
-        if e.get("type") == "objection" and e.get("author") in set(present)
-    ]
-    if outcome == "consensus_with_dissent" and not objectors:
-        raise ProtocolError(
-            V_OUTCOME_MISMATCH, "consensus_with_dissent requires a named objector"
-        )
-    if outcome == "no_convergence":
-        # never a host call: no decision entry, no chosen option
-        pass
+    return assert_outcome_matches_derived(entries, roster, outcome)
 
-    ts = now_utc()
-    facts_text = (
-        paths["facts"].read_text(encoding="utf-8") if paths["facts"].is_file() else ""
-    )
-    topic = meta.get("topic") or ""
-    record_md = render_record(topic, ts, facts_text, roster, entries, outcome)
-    paths["record"].write_text(record_md, encoding="utf-8")
 
+def _record_entry_body(
+    outcome: str,
+    supports: Sequence[Dict[str, Any]],
+    objectors: Sequence[Dict[str, Any]],
+) -> str:
     if outcome == "no_convergence":
-        record_body = (
+        return (
             "outcome: no_convergence\n"
             "escalated_to_ratifier: yes\n"
             "chosen: none\n"
             "The floor did not converge. The ratifier holds the final word. "
             "The host authors no decision.\n"
         )
-    elif outcome == "consensus_with_dissent":
-        record_body = (
+    if outcome == "consensus_with_dissent":
+        return (
             "outcome: consensus_with_dissent\n"
             "escalated_to_ratifier: no\n"
             "named dissent: "
@@ -1267,16 +1330,44 @@ def cmd_close(args: argparse.Namespace, stdout: TextIO, stderr: TextIO) -> int:
             + ", ".join(str(e["seq"]) for e in supports)
             + "\n"
         )
-    else:
-        record_body = (
-            "outcome: consensus\n"
-            "escalated_to_ratifier: no\n"
-            "supporting seqs: "
-            + ", ".join(str(e["seq"]) for e in supports)
-            + "\n"
-        )
+    return (
+        "outcome: consensus\n"
+        "escalated_to_ratifier: no\n"
+        "supporting seqs: "
+        + ", ".join(str(e["seq"]) for e in supports)
+        + "\n"
+    )
+
+
+def _apply_close(
+    session_dir: str | Path,
+    entries: Sequence[Dict[str, Any]],
+    roster: Sequence[Dict[str, str]],
+    meta: Dict[str, Any],
+    outcome: str,
+    ts: str,
+) -> Path:
+    paths = session_paths(session_dir)
+    facts_text = (
+        paths["facts"].read_text(encoding="utf-8") if paths["facts"].is_file() else ""
+    )
+    topic = meta.get("topic") or ""
+    record_md = render_record(topic, ts, facts_text, roster, entries, outcome)
+    paths["record"].write_text(record_md, encoding="utf-8")
+    supports = [
+        e
+        for e in entries
+        if e.get("type") == "support"
+        and e.get("author_kind") in ("council", "individual")
+    ]
+    present = present_seat_ids(roster, entries)
+    objectors = [
+        e
+        for e in entries
+        if e.get("type") == "objection" and e.get("author") in set(present)
+    ]
     append_entry(
-        args.dir,
+        session_dir,
         make_entry(
             seq=len(entries) + 1,
             ts=ts,
@@ -1285,7 +1376,7 @@ def cmd_close(args: argparse.Namespace, stdout: TextIO, stderr: TextIO) -> int:
             author="host",
             author_kind="host",
             typ="record",
-            body=record_body,
+            body=_record_entry_body(outcome, supports, objectors),
             addressed_to=[],
             answers=[int(e["seq"]) for e in supports],
             requested_by="",
@@ -1295,8 +1386,74 @@ def cmd_close(args: argparse.Namespace, stdout: TextIO, stderr: TextIO) -> int:
     meta["closed"] = True
     meta["outcome"] = outcome
     meta["closed_at"] = ts
+    save_session_meta(session_dir, meta)
+    return paths["record"]
+
+
+def cmd_close(args: argparse.Namespace, stdout: TextIO, stderr: TextIO) -> int:
+    outcome = args.outcome
+    paths = session_paths(args.dir)
+    entries = load_entries(args.dir)
+    meta = load_session_meta(args.dir)
+    roster = list(meta.get("seats") or [])
+    if meta.get("closed"):
+        raise ProtocolError("session_closed", "already closed")
+    _close_protocol_gates(entries, roster, outcome)
+    ts = now_utc()
+    record_path = _apply_close(args.dir, entries, roster, meta, outcome, ts)
+    stdout.write(f"closed outcome={outcome} record={record_path}\n")
+    return 0
+
+
+def cmd_reclose(args: argparse.Namespace, stdout: TextIO, stderr: TextIO) -> int:
+    outcome = args.outcome
+    reason = (args.reason or "").strip()
+    if not reason:
+        raise ProtocolError("missing_reason", "reclose requires --reason")
+    paths = session_paths(args.dir)
+    entries = load_entries(args.dir)
+    meta = load_session_meta(args.dir)
+    roster = list(meta.get("seats") or [])
+    if not meta.get("closed"):
+        raise ProtocolError(
+            "session_not_closed", "reclose requires a previous close"
+        )
+    _close_protocol_gates(entries, roster, outcome)
+    ts = now_utc()
+    previous_outcome = meta.get("outcome")
+    protocol_body = (
+        "previous close superseded\n"
+        f"previous_outcome: {previous_outcome}\n"
+        f"reason: {reason}\n"
+        "The previous record entry remains on the floor. This close replaces "
+        "record.md.\n"
+    )
+    append_entry(
+        args.dir,
+        make_entry(
+            seq=len(entries) + 1,
+            ts=ts,
+            round_n=int(entries[-1]["round"]) if entries else 0,
+            phase="close",
+            author="host",
+            author_kind="host",
+            typ="protocol",
+            body=protocol_body,
+            addressed_to=[],
+            answers=[],
+            requested_by="",
+            refs=[],
+        ),
+    )
+    entries = load_entries(args.dir)
+    record_path = _apply_close(args.dir, entries, roster, meta, outcome, ts)
+    meta = load_session_meta(args.dir)
+    meta["reclosed_at"] = ts
     save_session_meta(args.dir, meta)
-    stdout.write(f"closed outcome={outcome} record={paths['record']}\n")
+    stdout.write(
+        f"reclosed outcome={outcome} record={record_path} "
+        f"previous_outcome={previous_outcome}\n"
+    )
     return 0
 
 
@@ -1357,6 +1514,22 @@ def build_parser() -> argparse.ArgumentParser:
         required=True,
         choices=list(OUTCOMES),
     )
+
+    reclose_p = sub.add_parser(
+        "reclose",
+        help="supersede a defective close on the record (append-only)",
+    )
+    reclose_p.add_argument("--dir", required=True)
+    reclose_p.add_argument(
+        "--outcome",
+        required=True,
+        choices=list(OUTCOMES),
+    )
+    reclose_p.add_argument(
+        "--reason",
+        required=True,
+        help="why the previous close is superseded (required, on the record)",
+    )
     return p
 
 
@@ -1381,6 +1554,7 @@ def main(
         "pending": cmd_pending,
         "verify": cmd_verify,
         "close": cmd_close,
+        "reclose": cmd_reclose,
     }
     try:
         return dispatch[args.cmd](args, stdout, stderr)
