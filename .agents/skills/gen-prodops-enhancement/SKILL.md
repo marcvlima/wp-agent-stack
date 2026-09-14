@@ -13,7 +13,7 @@ description: >-
 version: 1.0.0
 ---
 
-# Skill: gen-prodops-enhancement (v2.1.0)
+# Skill: gen-prodops-enhancement (v2.9.0)
 
 **Holding-wide · MANDATORY while armed · core.**
 **Founder, 2026-09-08:** *"sempre que tiver usando outro code assistant, se for ativado o modo
@@ -75,7 +75,7 @@ turn is hers to end).
 | `scripts/gpe_tick.py` | the minute tick — arm it at the dispatch, and leave it running until the flow concludes |
 | `scripts/gpe_audit.py` | judging a cycle strictly against the contract |
 
-## The ten laws
+## The twelve laws
 
 > **v2.0.0 — the laws below are now GATES, not text.** Code Doctor `cvsess-63124fd46e3b4c68`
 > (bancadas: code assistant, ai, agência de marketing, Lucens) found that cycle `gpe-8a711f9ba13b`
@@ -95,15 +95,24 @@ turn is hers to end).
 3. **gen runs isolated.** A provisioned worktree of the target repository. You never write in that
    tree and never run `git` inside it: a polling reader steals the subject's `index.lock`. Read
    gen's own record.
-4. **Success is never gen's word.** The acceptance is declared BEFORE the dispatch, held out of
+4. **A named instrument is part of the deliverable.** Founder, 2026-09-09: *"se ele nao usou as
+   skills no brainstorming tudo ja esta invalidado, tudo o que ele produziu"* — and, in the same
+   ruling, that the supervisor may interrupt such a scenario on its own authority and take the
+   evidence straight to the Code Doctor. gen wrote five brainstorming rounds in which four
+   councils deliberated, voted and abstained, having invoked none of them; twelve commits of
+   competent work were voided. So: the brief lists what MUST HAVE HAPPENED separately from
+   advice, the judge verifies the invocation in the subject's OWN record before reading the
+   artifact, and declaring "I could not run it" is always an accepted outcome. A gate with no
+   honest failure path only converts fabrication into concealment.
+5. **Success is never gen's word.** The acceptance is declared BEFORE the dispatch, held out of
    gen's brief, and executed by you afterwards. An exit code is not a fact about the request;
    gen's success line is not evidence.
-5. **A halt interrupts — the processes are gone.** Not a flag, not a note for later
+6. **A halt interrupts — the processes are gone.** Not a flag, not a note for later
    (founder directive, 2026-09-05, retroactive).
-6. **Every cycle ends in a Code Doctor brainstorm**, on success and on failure, on the shared
+7. **Every cycle ends in a Code Doctor brainstorm**, on success and on failure, on the shared
    engine, with a REAL council, **Lucens present**, and her backlog covering all three areas —
    `quantum_computing`, `ontologies`, `logic`. An uncovered area blocks the close.
-7. **A tick every minute, until the flow concludes.** *"tem que ter um mecanismo de monitoramento
+8. **A tick every minute, until the flow concludes.** *"tem que ter um mecanismo de monitoramento
    a cada um minuto pra garantir que o fluxo esta rodando ate concluir"* (founder, 2026-09-09).
    `scripts/gpe_tick.py --repo R --record … --pid … --dispatch-at … --every` is armed at the
    dispatch and left running. Two rules carry the whole mechanism, both measured on
@@ -112,13 +121,13 @@ turn is hers to end).
    WRITE into the supervision surface, read from its mtime, never its name appearing in text an
    actor merely read). A watch that stops at its first suspicion is the silence-read-as-a-pass
    this mode exists to forbid.
-8. **You do not stop.** *"voce nao pode parar … ate ter sucesso"* (founder, 2026-09-09, correcting
+9. **You do not stop.** *"voce nao pode parar … ate ter sucesso"* (founder, 2026-09-09, correcting
    a supervisor that finished a failed attempt, wrote a report and asked what to do next). The
    retry is unbounded by the founder's own rule, so a stop is never the end of a cycle — it is a
    defect in the flow. Everything that does not depend on a founder answer is still owed, and a
    question is asked WHILE the flow continues, never instead of it. `gpe_tick.py` names the
    condition `supervisor_stopped` and keeps ticking, so the silence cannot pass for progress.
-9. **A deliberation obliges an implementation.** *"e depois de cada deliberacao do conselho voce
+10. **A deliberation obliges an implementation — and the gate now says so.** *"e depois de cada deliberacao do conselho voce
    tem que implementar as correcoes e seguir o rito. isso e lei na skill"* (founder, 2026-09-09).
    The council closing is not the end of a cycle and never a place to ask what to do next: the
    prescriptions are implemented immediately, in gen's own surface, with paired tests, on `main`
@@ -127,7 +136,28 @@ turn is hers to end).
    the one that already failed. A deliberation whose prescriptions did not land bought nothing,
    and leaving them unlanded is the same defect as stopping (law 8).
 
-10. **The flow reports itself, to a reader.** *"no final o code assistant gere um relatorio
+11. **Watching or working — there is no third state.** *"voce nao pode ficar parado, ou está
+   monitorando ou está atuando no que é responsabilidade sua … tem que ter um monitor pra impedir
+   a inercia a cada um minuto"* (founder, 2026-09-09). An armed supervisor is either WATCHING a
+   live flight or WORKING on what is its own — landing a prescription, judging, running the
+   Doctor, redeploying. Standing still is neither. `gpe_tick` names `supervisor_inert` on the
+   **minute** when no flight is running and the flow has not moved, because a quarter of an hour
+   of nothing (`supervisor_stopped`, law 9) is far too late for the founder to be the one who
+   notices. Measured on cycle `gpe-24500fd57f7d`: between a council closing and the next landing,
+   and again between a judgement and the next dispatch, the flow sat still and nothing said so.
+
+   **v2.8.0 — and the monitor must be RUNNING, not merely written.** The founder had to say it
+   twice: *"precisa adicionar na skill pra que tenha um monitor que é ativado a cada minuto para
+   garantir que o fluxo nao pare"*. The first cut added the READING and left the RUNNING to the
+   supervisor's memory — which is the one thing that cannot be relied on here, because a
+   supervisor that has stopped is exactly the one who will not remember to start its own watchdog.
+   Now `gpe_tick` writes a heartbeat every minute (`.risegen/gpe-mode/monitor/heartbeat.json`,
+   excluded from the tampering surface so the watch proving it is alive is never read as tampering
+   with the audit), `gpe_mode.py monitor start` launches it detached, and **the state machine
+   refuses to advance the rite while that heartbeat is stale** — `monitor_not_running`. No
+   monitor, no rite.
+
+12. **The flow reports itself, to a reader.** *"no final o code assistant gere um relatorio
    relatando as iteracoes, a causa da conclusao da iteracao, se foi falha ou sucesso, se tiver
    sido falha qual ocorreu, quais foram os backlogs derivados da deliberacao do conselho e qual
    foi a nova versao gerada e redeployada"* (founder, 2026-09-09). `gpe_report.py` renders exactly
@@ -138,6 +168,17 @@ turn is hers to end).
    `gpe-8a711f9ba13b` an end-of-flow-only report would have been written after the eighth
    iteration, so the minute tick names a cycle in breach while it can still change behaviour.
 
+> **v2.3.0 — the alarm names the act of SOMETHING ELSE, and the acceptance grades the DIFF.**
+> Code Doctor `cvsess-2a65a0f7d45f43c1` (cycle gpe-24500fd57f7d, Lucens present, all three areas)
+> measured two defects in this very harness. `audit_tampering_detected` fired on every honest
+> cycle, because the contract REQUIRES the supervisor to record `supervise.*` and `judge.*` after
+> the dispatch and the tick read any post-dispatch write as tampering — an alarm that is always on
+> is an alarm nobody reads. `gpe_mode.write_state` now stamps `state_machine_wrote_at` and
+> `gpe_tick.foreign_write` names only a write the state machine did not make (an unstamped state
+> falls back to the old reading, never to a silent pass). And the acceptance of that cycle scored
+> ELEVEN passes against an EMPTY diff because it grepped the whole tree: an acceptance a pristine
+> checkout would pass is not an acceptance — grade the diff.
+
 ## The cycle, phase by phase
 
 The names below are the contract (`references/request-contract.yaml`). After every phase, run
@@ -146,12 +187,12 @@ is never a fact.
 
 | # | Phase | What it is | Named facts |
 |---|---|---|---|
-| 0 | `arm` | the mode is armed on a PROVEN gen build | `arm.gen_version`, `arm.gen_sha256`, `arm.state_written` |
-| 1 | `open` | the request is recorded verbatim; the acceptance is declared and held out | `open.request_verbatim`, `open.acceptance_declared`, `open.acceptance_held_out` |
+| 0 | `arm` | the mode is armed on a PROVEN gen build, on the PINNED model | `arm.gen_version`, `arm.gen_sha256`, `arm.gen_model`, `arm.state_written` |
+| 1 | `open` | the request is recorded verbatim; the instruments it names are listed; the acceptance is declared and held out | `open.request_verbatim`, `open.instruments_named`, `open.acceptance_declared`, `open.acceptance_held_out` |
 | 2 | `provision` | a worktree for gen, clean by construction | `provision.worktree`, `provision.clean` |
-| 3 | `dispatch` | gen is driven with the brief; the session id is recorded | `dispatch.brief_delivered`, `dispatch.session_id` |
+| 3 | `dispatch` | gen is driven with the brief, on the pinned model; the session id is recorded | `dispatch.brief_delivered`, `dispatch.session_id`, `dispatch.model` |
 | 4 | `supervise` | gen's own record is read on an interval | `supervise.record_read`, `supervise.halt` |
-| 5 | `judge` | YOU execute the acceptance | `judge.acceptance_ran`, `judge.acceptance_result`, `judge.diff_read` |
+| 5 | `judge` | YOU verify the process in the subject's record, THEN execute the acceptance | `judge.provenance_verified`, `judge.acceptance_ran`, `judge.acceptance_result`, `judge.diff_read` |
 | 6 | `doctor` | the Code Doctor brainstorm over the session | `doctor.council_real`, `doctor.lucens_present`, `doctor.lucens_backlog_three_areas`, `doctor.targets_gen` |
 | 7 | `correct` | the prescriptions implemented in gen with paired tests | `correct.implemented`, `correct.tests_paired`, `correct.blocked_named` |
 | 8 | `land` | on `main`, verified against the remote | `land.on_main`, `land.remote_verified` |
@@ -181,3 +222,17 @@ of the flow. The honest bound is **novelty**, not a clock and not a counter:
 - a reason to skip a gate: quality-guard and plan-guard apply to every landed correction, and
   `--no-verify` stays forbidden;
 - a `--force` push. `main` moves fast-forward or the landing is a defect.
+
+**ABSOLUTE AUTONOMY (Founder, 2026-09-13):**
+The Host (Antigravity/Claude/etc) MUST monitor the cycle actively and HAS FULL PREROGATIVE to follow the planned flow autonomously until success.
+- You MUST NOT wait for the user to confirm halting a stuck process.
+- You MUST NOT ask the user for permission to invoke the Code Doctor or to launch a new attempt.
+- If you detect stagnation, a loop, or a failure, ACT IMMEDIATELY: halt, doctor, land, and redispatch.
+
+**MANDATORY DOCTOR DELIBERATION AND UNBIASED HOST (Founder, 2026-09-13):**
+1. The Host is FORBIDDEN from bypassing the Code Doctor brainstorm. You MUST invoke the brainstorm floor completely (with the required councils).
+2. The Host MUST NEVER bias the seats by pre-determining or forcing what has to be done. You must pass ONLY the raw facts and rationale (e.g., flight logs, error codes, process traces). The seats themselves must research, deliberate, and produce the prescriptions.
+3. Every Code Doctor deliberation MUST evaluate Lucens's three mandated cognitive categories (Quantum Computing, Ontological Inference, Formal Logic). The resulting backlog MUST contain at least one item from each of these three categories to evolve the engine. No exception.
+
+**MANDATORY MAIN INTEGRATION (Founder, 2026-09-13):**
+Always, after the host implements the Code Doctor's prescriptions (and after all tests pass via `go test ./...`), the host MUST commit and push the corrections directly to the `main` branch. This ensures that no engine or loop improvements are lost before dispatching the next attempt.

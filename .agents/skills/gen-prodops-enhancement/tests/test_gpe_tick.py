@@ -272,3 +272,173 @@ def test_a_clean_fulfilled_cycle_ends_quietly():
     assert t["concluded"] is True
     assert t["disagreements"] == []
     assert "OUT_OF_ACCORD" not in t["line"]
+
+
+# --- The model pin: the flight runs on the model the mode pins ----------------------------------
+# Founder, 2026-09-09: "e pra manter esse mesmo inclusive pode atualizar a skill para que ele
+# sempre rode neste modelo durante este modo". Measured on cycle gpe-24500fd57f7d, where the
+# dispatch inherited the environment's model and the same binary had announced a fallback to a
+# different one minutes earlier.
+
+def test_a_flight_off_the_pin_is_a_disagreement():
+    out = ev(record_model="qwen3.8-max")
+    assert any(d.startswith("model_off_pin") for d in out["disagreements"]), out["line"]
+    assert "qwen3.8-max" in out["line"] and gpe_tick.PINNED_MODEL in out["line"]
+    assert out["concluded"] is False  # law 1: reported, never terminal
+
+
+def test_a_flight_on_the_pin_agrees():
+    assert ev(record_model=gpe_tick.PINNED_MODEL)["disagreements"] == []
+
+
+def test_an_unmeasured_model_is_not_read_as_agreement_or_as_a_breach():
+    """None is 'not measured', which is never a reading — and never a silent pass either."""
+    assert ev(record_model=None)["disagreements"] == []
+    assert gpe_tick.record_model(None) is None
+    assert gpe_tick.record_model("/nonexistent/record.jsonl") is None
+
+
+def test_the_model_is_read_from_gens_own_record_newest_last(tmp_path):
+    rec = tmp_path / "session.jsonl"
+    rec.write_text(
+        json.dumps({"type": "user", "message": {}}) + "\n"
+        + json.dumps({"type": "assistant", "model": "qwen3.8-flash"}) + "\n"
+        + "{not json}\n"
+        + json.dumps({"type": "assistant", "model": "qwen3.8-max"}) + "\n")
+    assert gpe_tick.record_model(str(rec)) == "qwen3.8-max"
+
+
+def test_the_pin_is_the_one_the_state_machine_publishes():
+    """Two literals that must never drift apart: the tick judges what the dispatch is given."""
+    sys.path.insert(0, os.path.join(os.path.dirname(HERE), "scripts"))
+    import gpe_mode
+    assert gpe_tick.PINNED_MODEL == gpe_mode.GEN_MODEL
+
+
+# --- P7 / cycle gpe-24500fd57f7d: the alarm names the act of SOMETHING ELSE ----------------------
+# The contract REQUIRES the supervisor to record supervise.* and judge.* after the dispatch, so
+# "the surface was written since dispatch" fired on every honest cycle. An alarm that is always on
+# is an alarm nobody reads.
+
+def _surface(tmp_path, state):
+    d = tmp_path / ".risegen" / "gpe-mode"
+    d.mkdir(parents=True, exist_ok=True)
+    (d / "state.json").write_text(json.dumps(state))
+    return str(tmp_path)
+
+
+def test_the_supervisors_own_mandated_write_is_not_tampering(tmp_path):
+    repo = _surface(tmp_path, {"armed": True, "state_machine_wrote_at": time.time()})
+    assert gpe_tick.foreign_write(repo, dispatch_at=time.time() - 60) is False
+
+
+def test_a_write_the_state_machine_did_not_make_is_tampering(tmp_path):
+    """The stamp is old; the file is newer — something else wrote the surface."""
+    repo = _surface(tmp_path, {"armed": True, "state_machine_wrote_at": time.time() - 3600})
+    assert gpe_tick.foreign_write(repo, dispatch_at=time.time() - 60) is True
+
+
+def test_a_surface_untouched_since_the_dispatch_is_never_tampering(tmp_path):
+    repo = _surface(tmp_path, {"armed": True, "state_machine_wrote_at": time.time()})
+    assert gpe_tick.foreign_write(repo, dispatch_at=time.time() + 3600) is False
+
+
+def test_a_state_file_with_no_stamp_falls_back_to_the_old_reading_not_to_a_pass(tmp_path):
+    """Silence about provenance is never a pass — an unstamped state reads as foreign."""
+    repo = _surface(tmp_path, {"armed": True})
+    assert gpe_tick.foreign_write(repo, dispatch_at=time.time() - 60) is True
+
+
+def test_no_dispatch_means_nothing_to_compare(tmp_path):
+    repo = _surface(tmp_path, {"armed": True})
+    assert gpe_tick.foreign_write(repo, dispatch_at=None) is False
+
+
+# --- The plan gate, seen from the minute tick ---------------------------------------------------
+
+def test_the_tick_names_a_plan_that_has_not_landed():
+    cycle = {"attempts": [{"n": 1, "doctor": {
+        "prescriptions": [{"id": "P1", "target": "gen:x"}],
+        "lucens_backlog": [{"area": "logic", "title": "T-logic"}]}, "landings": {}}]}
+    assert gpe_tick.unlanded_plan(cycle) == ["P1", "T-logic"]
+
+
+def test_the_tick_is_quiet_once_every_item_landed():
+    cycle = {"attempts": [{"n": 1, "doctor": {
+        "prescriptions": [{"id": "P1", "target": "gen:x"}],
+        "lucens_backlog": [{"area": "logic", "title": "T-logic"}]},
+        "landings": {"P1": {"commit": "a"}, "T-logic": {"commit": "b"}}}]}
+    assert gpe_tick.unlanded_plan(cycle) == []
+
+
+def test_a_cycle_with_no_council_yet_has_no_unlanded_plan():
+    assert gpe_tick.unlanded_plan({"attempts": [{"n": 1}]}) == []
+    assert gpe_tick.unlanded_plan({}) == []
+
+
+# --- Inertia: watching or working, never idle ---------------------------------------------------
+# Founder, 2026-09-09: "voce nao pode ficar parado, ou está monitorando ou está atuando no que é
+# responsabilidade sua … tem que ter um monitor pra impedir a inercia a cada um minuto".
+
+def test_no_flight_and_no_movement_is_inertia_on_the_minute():
+    out = ev(flow_running=False, flow_silent_seconds=gpe_tick.INERTIA_SECONDS)
+    assert any(d.startswith("supervisor_inert") for d in out["disagreements"]), out["line"]
+    assert out["concluded"] is False  # law 1: named, never terminal
+
+
+def test_a_running_flight_is_never_inertia_however_quiet_the_supervisor_is():
+    """While gen flies, WATCHING is the work. The supervisor's own silence is expected."""
+    out = ev(flow_running=True, flow_silent_seconds=600)
+    assert not any(d.startswith("supervisor_inert") for d in out["disagreements"])
+
+
+def test_a_supervisor_that_is_working_is_not_inert():
+    """Its work leaves marks on the surface; a fresh mark is the evidence of working."""
+    out = ev(flow_running=False, flow_silent_seconds=5)
+    assert not any(d.startswith("supervisor_inert") for d in out["disagreements"])
+
+
+def test_past_the_long_horizon_the_harder_name_takes_over():
+    """Inertia is the minute-scale reading; supervisor_stopped is the quarter-hour one. A tick
+    must not shout both at once about the same silence."""
+    out = ev(flow_running=False, flow_silent_seconds=gpe_tick.FLOW_STALL_SECONDS)
+    names = [d.split(" ")[0] for d in out["disagreements"]]
+    assert "supervisor_stopped" in names
+    assert "supervisor_inert" not in names
+
+
+def test_an_unmeasured_silence_is_not_inertia():
+    """None is 'not measured', which is never a reading — the rule this cycle learned three times."""
+    out = ev(flow_running=False, flow_silent_seconds=None)
+    assert not any(d.startswith("supervisor_inert") for d in out["disagreements"])
+
+
+# --- The monitor proves it is running, every minute ---------------------------------------------
+
+def test_every_tick_writes_a_heartbeat(tmp_path):
+    (tmp_path / ".risegen" / "gpe-mode").mkdir(parents=True)
+    (tmp_path / ".risegen" / "gpe-mode" / "state.json").write_text(json.dumps({"armed": True}))
+    gpe_tick.tick(str(tmp_path))
+    beat = json.loads((tmp_path / gpe_tick.HEARTBEAT_REL).read_text())
+    assert time.time() - beat["at"] < 5
+    assert beat["interval"] == gpe_tick.DEFAULT_INTERVAL
+
+
+def test_the_heartbeat_is_not_read_as_tampering_with_the_surface(tmp_path):
+    """The watch proving it is alive must not trip the alarm that watches the surface — otherwise
+    the minute monitor and the tampering alarm cannot both be on."""
+    d = tmp_path / ".risegen" / "gpe-mode"
+    d.mkdir(parents=True)
+    (d / "state.json").write_text(json.dumps({"armed": True, "state_machine_wrote_at": time.time()}))
+    dispatch_at = time.time() - 30
+    gpe_tick.beat(str(tmp_path))
+    assert gpe_tick.foreign_write(str(tmp_path), dispatch_at) is False
+
+
+def test_a_heartbeat_that_cannot_be_written_never_kills_the_watch(tmp_path):
+    """A watch that dies trying to say it is alive is worse than one that says nothing."""
+    (tmp_path / ".risegen" / "gpe-mode").mkdir(parents=True)
+    (tmp_path / ".risegen" / "gpe-mode" / "state.json").write_text(json.dumps({"armed": True}))
+    (tmp_path / ".risegen" / "gpe-mode" / "monitor").write_text("a file where a directory goes")
+    out = gpe_tick.tick(str(tmp_path))  # must not raise
+    assert "line" in out

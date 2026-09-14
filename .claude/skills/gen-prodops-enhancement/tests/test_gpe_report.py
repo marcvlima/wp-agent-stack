@@ -86,6 +86,11 @@ def armed_repo(tmp_path, attempts):
         "gen": {"version": "gen 0.2.0", "sha256": "abc"},
         "cycles": [cycle_with(attempts)],
     }))
+    # An armed mode runs its minute monitor; the rite refuses to advance without one.
+    import time as _t
+    beat = repo / ".risegen" / "gpe-mode" / "monitor"
+    beat.mkdir(parents=True, exist_ok=True)
+    (beat / "heartbeat.json").write_text(json.dumps({"at": _t.time(), "pid": 1}))
     return str(repo)
 
 

@@ -21,6 +21,11 @@ phases:
           unknown: an armed mode over an unknown build cannot judge a redeploy later.
       - name: arm.gen_sha256
         reading: The sha256 of that binary. It is what a later redeploy read-back is compared to.
+      - name: arm.gen_model
+        reading: >-
+          The model the mode PINS for gen (`gpe_mode.GEN_MODEL`), recorded at arming and passed as
+          `-m` at every dispatch. Absent is unknown: a flight that inherited whatever the
+          environment defaulted to that minute cannot be compared with the next one.
       - name: arm.state_written
         reading: >-
           `.risegen/gpe-mode/state.json` exists and says armed. Her named risk is supervisory
@@ -40,6 +45,13 @@ phases:
         reading: >-
           An executable check (command, test, probe) that answers "was the request fulfilled?"
           without asking gen. Declared before the dispatch, never after seeing the result.
+      - name: open.instruments_named
+        reading: >-
+          The instruments the request names — a council skill, her door, the shared engine — listed
+          as things that MUST HAVE HAPPENED and will be verified in the subject's own record.
+          `none` when the request names none. Founder ruling 2026-09-09 (gpe-24500fd57f7d): a named
+          instrument is part of the deliverable, not part of the method, and gen wrote five rounds
+          of four councils it never invoked.
       - name: open.acceptance_held_out
         reading: >-
           The acceptance is NOT in gen's brief. An acceptance gen can read is an acceptance gen
@@ -62,6 +74,21 @@ phases:
     must:
       - name: dispatch.brief_delivered
         reading: The brief reached gen — measured on gen's own record, not on the dispatch call.
+      - name: dispatch.knobs_read_from_source
+        reading: >-
+          Every launch knob the supervisor intends to use was resolved against GEN'S OWN SOURCE
+          before the first dispatch, and what it found is recorded. R4 (Code Doctor
+          cvsess-32e38638bcbe40d7): two flights of cycle gpe-24500fd57f7d were lost to the
+          supervisor setting `model.skipLoopDetection` in settings.json, which gen's own
+          engine-home provisioning REWRITES on every launch — while gen ships
+          `GEN_SKIP_LOOP_DETECTION=1` for exactly that case, with a comment explaining that inside
+          the rite the engine's detector is "a second, trigger-happy judge". The mode obliges the
+          supervisor to read gen's RECORD; it must also oblige it to read gen's SOURCE.
+      - name: dispatch.model
+        reading: >-
+          The model the flight actually ran on, read from gen's OWN record — never from the
+          dispatch command. It must equal the pin; the minute tick names `model_off_pin` when it
+          does not.
       - name: dispatch.session_id
         reading: >-
           The id under which gen's record can be read afterwards. Without it the supervision has
@@ -88,6 +115,12 @@ phases:
       The SUPERVISOR executes the held-out acceptance and reads the diff. gen's exit code and
       gen's success line are not facts about the request.
     must:
+      - name: judge.provenance_verified
+        reading: >-
+          When the request named an instrument, the subject's OWN record was checked for the
+          invocation BEFORE any check on the artifact (`gen provenance verify`). `n/a` only when
+          the request named none. The artifact is written by the party under test; the record is
+          not — and a product check run first contaminates the judgement of the process.
       - name: judge.acceptance_ran
         reading: The acceptance was executed by the supervisor, with its command and output kept.
       - name: judge.acceptance_result

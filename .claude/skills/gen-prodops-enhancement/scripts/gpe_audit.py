@@ -46,6 +46,8 @@ def facts_of(cycle: Dict[str, Any], attempt: Optional[Dict[str, Any]],
         merged["arm.gen_version"] = gen["version"]
     if gen.get("sha256"):
         merged["arm.gen_sha256"] = gen["sha256"]
+    if gen.get("model"):
+        merged["arm.gen_model"] = gen["model"]
     merged.update(cycle.get("facts") or {})
     if attempt:
         merged.update(attempt.get("facts") or {})
