@@ -13,7 +13,7 @@ description: >-
 version: 1.0.0
 ---
 
-# Skill: gen-prodops-enhancement (v2.9.0)
+# Skill: gen-prodops-enhancement (v2.10.0)
 
 **Holding-wide · MANDATORY while armed · core.**
 **Founder, 2026-09-08:** *"sempre que tiver usando outro code assistant, se for ativado o modo
@@ -89,6 +89,15 @@ turn is hers to end).
 1. **The mode lives on disk, not in your head.** `gpe_mode.py arm` writes `.risegen/gpe-mode/state.json`;
    re-read it at the start of every turn. Her named risk is *supervisory drift* — an assistant that
    forgets it is in the mode and quietly does the work itself.
+   **v2.10.0 — a second assistant in the same repository attaches; it does not open a second
+   cycle.** Measured on cycle `gpe-c37b89d3b3a4` (2026-09-16): the subject invoked this skill,
+   armed a second `state.json` inside `worktrees/gpe-*`, opened the same verbatim request as
+   `gpe-585d6cde4e13` and dispatched a second `gen`. `cycle_still_open` already refused a second
+   cycle in *this* file; it did not see a sibling worktree. Now `arm` and `open` walk
+   `git worktree list`, refuse `cycle_still_open: <id>` when an open cycle already exists in
+   this gitdir, and `arm` from a subject worktree (`worktrees/gpe-*`) is the same refusal —
+   this skill is the supervisor's. A newly arrived assistant runs `gpe_mode.py status` and
+   supervises; it does not arm, open, or dispatch a second `gen`.
 2. **Every solicitation is delegated.** While armed you do not implement, and you do not answer
    from your own knowledge: you brief gen, dispatch, supervise, and report what gen produced. Your
    own hands are for supervising, judging, doctoring, landing and redeploying — nothing else.

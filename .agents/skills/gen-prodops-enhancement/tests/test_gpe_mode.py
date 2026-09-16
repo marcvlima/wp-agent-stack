@@ -54,6 +54,29 @@ def _beat(tmp_path, seconds_ago=0.0):
 
 # ---------------------------------------------------------------- R1: the mode is on disk
 
+def test_a_subject_worktree_must_not_arm(tmp_path):
+    """Measured on gpe-c37b89d3b3a4: gen armed this skill inside worktrees/gpe-*."""
+    subject = tmp_path / "worktrees" / "gpe-c37b89d3b3a4"
+    subject.mkdir(parents=True)
+    path, runner = fake_gen(tmp_path)
+    with pytest.raises(gpe_mode.ModeError, match="cycle_still_open"):
+        gpe_mode.cmd_arm(str(subject), path, runner=runner)
+
+
+def test_arm_refuses_when_a_sibling_worktree_already_has_an_open_cycle(tmp_path, monkeypatch):
+    """cycle_still_open used to see only THIS state.json. A sibling worktree was invisible."""
+    main = tmp_path / "main"
+    sibling = tmp_path / "wt-b"
+    main.mkdir()
+    sibling.mkdir()
+    arm(main)
+    gpe_mode.cmd_open(str(main), "the challenge")
+    monkeypatch.setattr(gpe_mode, "git_worktree_paths", lambda repo: [str(main), str(sibling)])
+    path, runner = fake_gen(sibling)
+    with pytest.raises(gpe_mode.ModeError, match="cycle_still_open"):
+        gpe_mode.cmd_arm(str(sibling), path, runner=runner)
+
+
 def test_arming_writes_the_state_the_assistant_rereads(tmp_path):
     arm(tmp_path)
     state = json.loads((tmp_path / ".risegen" / "gpe-mode" / "state.json").read_text())
