@@ -65,6 +65,13 @@ HALTS = (
 
 STATE_REL = os.path.join(".risegen", "gpe-mode", "state.json")
 
+#: A subject worktree is named `worktrees/gpe-<cycle-id>`. Measured on cycle
+#: gpe-c37b89d3b3a4 (2026-09-16): gen invoked this skill, armed a SECOND state.json
+#: inside its worktree, opened the same verbatim request as cycle gpe-585d6cde4e13
+#: and dispatched a second gen. Two assistants, one challenge. The subject does
+#: not arm; a newly arrived assistant attaches to the open cycle.
+SUBJECT_WORKTREE_MARK = os.sep + "worktrees" + os.sep + "gpe-"
+
 #: The minute monitor's proof of life, written by gpe_tick.beat(). Founder, 2026-09-09:
 #: *"precisa adicionar na skill pra que tenha um monitor que é ativado a cada minuto para garantir
 #: que o fluxo nao pare"*.
@@ -218,7 +225,86 @@ def _sha256(path: str) -> str:
 
 # ---------------------------------------------------------------- commands
 
+def is_subject_worktree(repo: str) -> bool:
+    """True when `repo` is a GPE subject worktree (`…/worktrees/gpe-<id>`)."""
+    return SUBJECT_WORKTREE_MARK in (os.path.abspath(repo) + os.sep)
+
+
+def git_worktree_paths(repo: str) -> List[str]:
+    """Every worktree of this gitdir, or just `repo` when git cannot answer."""
+    repo = os.path.abspath(repo)
+    try:
+        out = subprocess.run(
+            ["git", "-C", repo, "worktree", "list", "--porcelain"],
+            capture_output=True, text=True, timeout=20)
+    except Exception:  # noqa: BLE001 — unmeasurable is this checkout only
+        return [repo]
+    if out.returncode != 0:
+        return [repo]
+    paths: List[str] = []
+    for line in (out.stdout or "").splitlines():
+        if line.startswith("worktree "):
+            paths.append(os.path.abspath(line.split(" ", 1)[1]))
+    return paths or [repo]
+
+
+def open_cycles(repo: str) -> List[Dict[str, str]]:
+    """Open cycles on disk across this gitdir (main checkout + worktrees)."""
+    found: List[Dict[str, str]] = []
+    seen = set()
+    for root in git_worktree_paths(repo):
+        root = os.path.abspath(root)
+        if root in seen:
+            continue
+        seen.add(root)
+        path = os.path.join(root, STATE_REL)
+        if not os.path.isfile(path):
+            continue
+        try:
+            with open(path, encoding="utf-8") as fh:
+                state = json.load(fh)
+        except (OSError, ValueError, TypeError):
+            continue
+        cycles = state.get("cycles") or []
+        if not cycles:
+            continue
+        last = cycles[-1]
+        if last.get("outcome") in ("fulfilled", "abandoned"):
+            continue
+        found.append({
+            "id": str(last.get("id") or ""),
+            "path": root,
+            "request": str(last.get("request") or ""),
+        })
+    return found
+
+
+def require_no_foreign_open_cycle(repo: str) -> None:
+    """Refuse a second cycle of the same repository while one is already open.
+
+    `cycle_still_open` already refused a second cycle in THIS state.json. That
+    did not see a second state.json in a sibling worktree, which is how
+    gpe-c37b89d3b3a4 grew gpe-585d6cde4e13 on the same request.
+    """
+    here = os.path.abspath(repo)
+    for cycle in open_cycles(repo):
+        if os.path.abspath(cycle["path"]) == here:
+            continue
+        raise ModeError(
+            "cycle_still_open: %s (already running in %s). Attach — `gpe_mode.py status` — "
+            "do not arm, open or dispatch a second gen."
+            % (cycle["id"] or "?", cycle["path"]))
+
+
 def cmd_arm(repo: str, gen_path: Optional[str] = None, runner=subprocess.run) -> Dict[str, Any]:
+    if is_subject_worktree(repo):
+        open_here = open_cycles(repo)
+        ident = open_here[0]["id"] if open_here else "subject worktree"
+        raise ModeError(
+            "cycle_still_open: %s — this skill is the supervisor's; a subject worktree "
+            "(worktrees/gpe-*) does not arm, open or dispatch. Attach to the cycle "
+            "already running." % ident)
+    require_no_foreign_open_cycle(repo)
     gen = gen_readback(gen_path, runner=runner)
     state = read_state(repo)
     state.update({
@@ -249,6 +335,7 @@ def cmd_open(repo: str, request: str) -> Dict[str, Any]:
     cycles = state.setdefault("cycles", [])
     if cycles and cycles[-1].get("outcome") not in ("fulfilled", "abandoned"):
         raise ModeError("cycle_still_open: %s" % cycles[-1]["id"])
+    require_no_foreign_open_cycle(repo)
     cycle = {
         "id": "gpe-%s" % hashlib.sha256((request + _now()).encode()).hexdigest()[:12],
         "opened_at": _now(),
