@@ -1,0 +1,5 @@
+{
+  "name": "local-inference-policy",
+  "version": "1.0.0",
+  "description": "Mandatory rules and architecture for the local inference model, the Connector, and the Gateway. Dictates the default model (gemma-4-26b-a4b-1gpu), proper lifecycle management, and forbids bypassing the Gateway."
+}
