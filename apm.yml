@@ -14,6 +14,7 @@ targets:
 includes: auto
 dependencies:
   apm:
+    - marcvlima/holding-central-ai-assets/quality-enforcement
     - marcvlima/holding-central-ai-assets/local-inference-policy
     - marcvlima/holding-central-ai-assets/gen-prodops-enhancement
     - marcvlima/holding-central-ai-assets/brainstorm-floor
