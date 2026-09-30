@@ -7,9 +7,17 @@ DEST_DIR="${HOME}/.local/bin"
 DEST="${DEST_DIR}/quality-guard"
 REPO="marcvlima/holding-central-ai-assets"
 
+# C10: never bless a stub named quality-guard. Verify the version line.
+is_real_guard() {
+  _p="$1"
+  [ -n "$_p" ] || return 1
+  "$_p" version 2>/dev/null | grep -Eq '^quality-guard [0-9]+\.[0-9]+' || return 1
+  return 0
+}
 find_guard() {
-  command -v quality-guard 2>/dev/null && return 0
-  [ -x "$DEST" ] && echo "$DEST" && return 0
+  _c="$(command -v quality-guard 2>/dev/null || true)"
+  if [ -n "$_c" ] && is_real_guard "$_c"; then echo "$_c"; return 0; fi
+  if [ -x "$DEST" ] && is_real_guard "$DEST"; then echo "$DEST"; return 0; fi
   [ -x "${GOPATH:-$HOME/go}/bin/quality-guard" ] && echo "${GOPATH:-$HOME/go}/bin/quality-guard" && return 0
   return 1
 }

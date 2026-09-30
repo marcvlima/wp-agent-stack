@@ -16,7 +16,7 @@ if ! command -v quality-guard >/dev/null 2>&1; then
 fi
 # Simulate commit gate via a synthetic bash event
 export QG_GIT_HOOK=1
-python3 - <<'PY' 2>/dev/null || true
+if ! python3 - <<'PY'; then exit 1; fi
 import json,os,subprocess,sys
 payload={"session_id":"git-hook","cwd":os.getcwd(),"hook_event_name":"PreToolUse","tool_name":"Bash","tool_input":{"command":"git commit"}}
 p=subprocess.run(["quality-guard","hook","claude-code","--event","PreToolUse"],input=json.dumps(payload).encode(),capture_output=True)
