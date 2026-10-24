@@ -1,0 +1,38 @@
+{
+  "$schema": "https://schema.apm.dev/skill/v1.0.0",
+  "name": "risegen-access-keys",
+  "displayName": "risegen-access-keys — create, look up, or reuse RiseGen credentials",
+  "packageId": "@holding-central-ai-assets/risegen-access-keys",
+  "version": "1.0.0",
+  "description": "Procedure for any code assistant to reuse or create a RiseGen credential: user inference API key, OAuth device grant, or application client credentials.",
+  "author": "Marcus Vinícius de Lima (holding)",
+  "license": "MIT",
+  "repository": "https://github.com/marcvlima/holding-central-ai-assets",
+  "keywords": ["risegen", "api-key", "device-grant", "oauth", "credentials"],
+  "mainDocument": "SKILL.md",
+  "skillGuide": "SKILL.md",
+  "documents": {
+    "skillGuide": "SKILL.md",
+    "userApiKeys": "references/user-api-keys.md",
+    "deviceGrant": "references/device-grant.md",
+    "applicationKeys": "references/application-keys.md"
+  },
+  "usage": {
+    "aiAssistants": "Reuse a user inference key before creating one. Device grant yields a session, not the gateway key. Application client secrets are not a provider API key.",
+    "engineers": "Three families. Go types in api/internal/auth/types.go are the scope authority.",
+    "founders": "One key per person is reused. Secrets stay out of git and out of chat."
+  },
+  "apm": {
+    "type": "process-skill",
+    "category": "integration-discipline",
+    "tier": "core",
+    "compatibility": {
+      "minVersion": "1.0.0",
+      "platforms": ["vscode", "web", "api", "cli"]
+    }
+  },
+  "directories": {
+    "references": "references",
+    "tests": "tests"
+  }
+}
