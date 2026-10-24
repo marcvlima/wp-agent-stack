@@ -1,0 +1,39 @@
+{
+  "$schema": "https://schema.apm.dev/skill/v1.0.0",
+  "name": "risegen-provider-setup",
+  "displayName": "risegen-provider-setup — configure RiseGen AI as a provider",
+  "packageId": "@holding-central-ai-assets/risegen-provider-setup",
+  "version": "1.0.0",
+  "description": "Procedure for any code assistant to configure RiseGen AI as an inference provider in IDEs, SDKs, and other products.",
+  "author": "Marcus Vinícius de Lima (holding)",
+  "license": "MIT",
+  "repository": "https://github.com/marcvlima/holding-central-ai-assets",
+  "keywords": ["risegen", "provider", "openai-compatible", "gateway", "setup"],
+  "mainDocument": "SKILL.md",
+  "skillGuide": "SKILL.md",
+  "documents": {
+    "skillGuide": "SKILL.md",
+    "gateway": "references/gateway.md",
+    "products": "references/products.md",
+    "seedScript": "scripts/seed_trae_cache.py"
+  },
+  "usage": {
+    "aiAssistants": "Base URL https://nex-global.risegen.ai/v1, key from risegen-access-keys Family A. Always re-fetch GET /v1/models before listing ids.",
+    "engineers": "Gateway ranks lanes hosted/plan/payg. One key sees all models. Trae uses custom_openai_compatible with Full URL off.",
+    "founders": "No new keys minted. The founder's existing gateway key is reused. Secrets stay out of git and out of chat."
+  },
+  "apm": {
+    "type": "process-skill",
+    "category": "integration-discipline",
+    "tier": "core",
+    "compatibility": {
+      "minVersion": "1.0.0",
+      "platforms": ["vscode", "web", "api", "cli"]
+    }
+  },
+  "directories": {
+    "references": "references",
+    "scripts": "scripts",
+    "tests": "tests"
+  }
+}
