@@ -1,0 +1,26 @@
+{
+  "$schema": "https://schema.apm.dev/skill/v1.0.0",
+  "name": "rdp-session-preservation",
+  "displayName": "rdp-session-preservation — never disrupt the current remote/graphical session without signalling, risk analysis and the user's decision",
+  "packageId": "@holding-central-ai-assets/rdp-session-preservation",
+  "version": "1.0.0",
+  "description": "MANDATORY before any change touching RDP / remote desktop or the graphical session it shows. Inventory the live session, classify each command (none / reconnect / session-ending), signal with a risk analysis before executing, wait for the user's explicit decision, and read back afterwards.",
+  "author": "Marcus Vinícius de Lima (holding)",
+  "license": "MIT",
+  "repository": "https://github.com/marcvlima/holding-central-ai-assets",
+  "keywords": ["rdp", "remote-desktop", "session", "risk-analysis", "consent", "gnome", "wayland", "holding"],
+  "mainDocument": "SKILL.md",
+  "skillGuide": "SKILL.md",
+  "documents": { "skillGuide": "SKILL.md" },
+  "usage": {
+    "aiAssistants": "Before ANY RDP/remote-desktop/display/session change: inventory, classify, signal + risk analysis, wait for the user's go, read back.",
+    "engineers": "Process skill that keeps live remote sessions from being killed by maintenance.",
+    "founders": "No agent ends or disrupts your current session without telling you the risk first; the decision is yours."
+  },
+  "apm": {
+    "type": "process-skill",
+    "category": "infra-discipline",
+    "tier": "core",
+    "compatibility": { "minVersion": "1.0.0", "platforms": ["vscode", "web", "api", "cli"] }
+  }
+}
