@@ -1,0 +1,53 @@
+{
+  "$schema": "https://schema.apm.dev/skill/v1.0.0",
+  "name": "agent-self-evolution",
+  "displayName": "Agent Self-Evolution — error → lesson → matrix",
+  "packageId": "@holding-central-ai-assets/agent-self-evolution",
+  "version": "1.15.0",
+  "description": "MANDATORY after any agent/code-assistant failure or founder correction: file the concrete incident, name the failure CATEGORY, generalize a rule, define an action plan, promote to the holding AGENTS matrix (progressive disclosure), and reconcile across holding repos. Lesson-only closeout is forbidden — it must be category + strategy. Required on every new repository by default.",
+  "author": "Marcus Vinícius de Lima (holding)",
+  "license": "MIT",
+  "repository": "https://github.com/marcvlima/holding-central-ai-assets",
+  "keywords": [
+    "self-evolution",
+    "lessons-learned",
+    "agents-matrix",
+    "progressive-disclosure",
+    "holding",
+    "error-driven",
+    "apm",
+    "agents"
+  ],
+  "mainDocument": "SKILL.md",
+  "skillGuide": "SKILL.md",
+  "documents": {
+    "skillGuide": "SKILL.md",
+    "protocol": "references/protocol.md",
+    "matrixAlwaysOn": "references/matrix-always-on.md",
+    "reconcile": "references/reconcile.md",
+    "lessonsIndex": "references/lessons/INDEX.md"
+  },
+  "usage": {
+    "aiAssistants": "On ANY agent error, founder correction, false diagnosis, or failed plan path: STOP, run this skill end-to-end before claiming the incident closed. Do not wait for the founder to ask for a postmortem.",
+    "engineers": "Canonical holding mechanism to turn agent failures into matrix rules and distribute them via APM + AGENTS.md reconcile.",
+    "founders": "Guarantees that expensive agent mistakes become permanent institutional memory, not one-session regret."
+  },
+  "apm": {
+    "type": "process-skill",
+    "category": "agent-discipline",
+    "tier": "core",
+    "compatibility": {
+      "minVersion": "1.0.0",
+      "platforms": [
+        "vscode",
+        "web",
+        "api",
+        "cli"
+      ]
+    }
+  },
+  "directories": {
+    "references": "references",
+    "scripts": "scripts"
+  }
+}
