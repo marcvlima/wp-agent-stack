@@ -148,6 +148,7 @@ When computing the Go scope shadow, any of these conditions widens the shadow to
 `quality-surfaces.yaml` maps globs → `gate_cmd` (+ optional `system_cmd` for
 `blast: critical`). Template: `quality-enforcement/templates/quality-surfaces.yaml`.
 
+- `gate_cmd` for Go omits `-count=1` so the Go result cache applies locally (CI/`--full` remains the authority; add `-count=1` only for integration/randomized tests). Independent surfaces run in parallel (`QUALITY_GUARD_JOBS=N`, `1` = serial) and a surface with `serial: true` runs alone; git status codes are not part of the marker fingerprint.
 - **Never** edit the surface map or hook configs as an agent unless the founder
   asked — quality-guard denies those paths.
 - **Human override only:** `QUALITY_GUARD_OVERRIDE=<reason>` env, or founder-approved
